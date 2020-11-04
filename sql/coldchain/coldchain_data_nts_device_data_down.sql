@@ -1,0 +1,32 @@
+create table nts_device_data_down
+(
+    id               bigint auto_increment
+        primary key,
+    device_id        bigint               null comment '设备ID',
+    down_start       datetime             null comment '下载开始时间',
+    down_end         datetime             null comment '下载结束时间',
+    receiving_method varchar(64)          null comment '接收方式',
+    down_status      tinyint(1) default 0 null comment '下载状态：0：待生成；1：已生成；2：生成失败',
+    path             varchar(255)         null comment '本地保存路径',
+    create_time      datetime             null,
+    create_by        varchar(64)          null,
+    update_time      datetime             null,
+    update_by        varchar(64)          null,
+    delete_flag      tinyint(1) default 0 null comment '删除标记0：正常 ；1：删除',
+    user_id          int(10)              null comment '用户id'
+);
+
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (11, 82018, '2020-10-21 00:00:00', '2020-10-30 00:00:00', '593373871@qq.com', 1, '/public/upload/excel/2020/10-30/null.xlsx', '2020-10-30 09:32:05', 'admin', '2020-10-30 09:32:15', null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (12, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:16:58', '13066803937', '2020-10-30 10:17:02', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (13, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:17:14', '13066803937', '2020-10-30 10:17:26', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (14, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 0, null, '2020-10-30 10:17:57', '13066803937', null, null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (15, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:22:16', '13066803937', '2020-10-30 10:22:32', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (16, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:23:11', '13066803937', '2020-10-30 10:23:19', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (17, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:26:27', '13066803937', '2020-10-30 10:26:41', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (18, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 0, null, '2020-10-30 10:29:05', '13066803937', null, null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (19, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 0, null, '2020-10-30 10:29:42', '13066803937', null, null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (20, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 0, null, '2020-10-30 10:30:13', '13066803937', null, null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (21, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 0, null, '2020-10-30 10:38:23', '13066803937', null, null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (22, 82018, '2020-10-29 10:18:59', '2020-10-30 10:18:59', '18687269789@163.com', 1, '/public/upload/excel/2020/10-30/121212.xlsx', '2020-10-30 10:40:52', '13066803937', '2020-10-30 10:40:57', '13066803937', 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (23, 82018, '2020-10-23 00:00:00', '2020-10-30 00:00:00', '593373871@qq.com', 1, '/public/upload/excel/2020/10-30/Meter.xlsx', '2020-10-30 10:47:55', 'admin', '2020-10-30 10:48:00', null, 0, null);
+INSERT INTO coldchain_data.nts_device_data_down (id, device_id, down_start, down_end, receiving_method, down_status, path, create_time, create_by, update_time, update_by, delete_flag, user_id) VALUES (25, 82018, '2020-10-27 00:00:00', '2020-10-31 00:00:00', '1319182944@qq.com', 1, '/public/upload/excel/2020/10-30/Meter.xlsx', '2020-10-30 14:40:35', 'admin', '2020-10-30 14:40:44', null, 0, null);
