@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.DeviceDataDownMapper">
+
+    <select id="deviceDataDownPage" resultType="com.coldchain.entity.vo.DeviceDataDownVo">
+        select
+        nddd.`id` deviceDataDownId,
+        nddd.`device_id` deviceId,
+        nddd.`down_start` downStart,
+        nddd.`down_end` downEnd,
+        nddd.`receiving_method` receivingMethod,
+        nddd.`down_status` downStatus,
+        nddd.`path`,
+        nddd.`create_time` createTime,
+        nddd.`create_by`,
+        nddd.`update_time`,
+        nddd.`update_by`,
+        nddd.`user_id`,
+        nddd.`delete_flag`
+        from nts_device_data_down nddd
+        where 1=1
+        <if test="downStatus != null">
+            and nddd.down_status = #{downStatus}
+        </if>
+        <if test="userId != null">
+            and nddd.user_id = #{userId}
+        </if>
+        order by nddd.`create_time` desc
+    </select>
+</mapper>

@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.CpDeviceMapper">
+
+    <sql id="baseSql">
+        cd.id,
+        cd.user_id,
+        cd.device_name,
+        cd.device_sn,
+        cd.device_type,
+        cd.sim_card,
+        cd.positioning_mode,
+        cd.device_manufacturer,
+        cd.device_company,
+        cd.device_project,
+        cd.create_time,
+        cd.device_group,
+        cd.link_type,
+        cd.is_on,
+        cd.create_date,
+        cd.founder,
+        cd.modify_time,
+        cd.MODIFIER,
+        cd.lat,
+        cd.lng,
+        cd.is_alarms,
+        cd.is_delete,
+        cd.is_line,
+        cd.default_timescale
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.coldchain.entity.CpDevice">
+        <!--@Table cp_device-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="VARCHAR"/>
+        <result property="deviceName" column="device_name" jdbcType="VARCHAR"/>
+        <result property="deviceSn" column="device_sn" jdbcType="VARCHAR"/>
+        <result property="deviceType" column="device_type" jdbcType="VARCHAR"/>
+        <result property="simCard" column="sim_card" jdbcType="VARCHAR"/>
+        <result property="positioningMode" column="positioning_mode" jdbcType="VARCHAR"/>
+        <result property="deviceManufacturer" column="device_manufacturer" jdbcType="VARCHAR"/>
+        <result property="deviceCompany" column="device_company" jdbcType="VARCHAR"/>
+        <result property="deviceProject" column="device_project" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="deviceGroup" column="device_group" jdbcType="VARCHAR"/>
+        <result property="linkType" column="link_type" jdbcType="VARCHAR"/>
+        <result property="isOn" column="is_on" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+        <result property="founder" column="founder" jdbcType="VARCHAR"/>
+        <result property="modifyTime" column="modify_time" jdbcType="VARCHAR"/>
+        <result property="modifier" column="modifier" jdbcType="VARCHAR"/>
+        <result property="lat" column="lat" jdbcType="VARCHAR"/>
+        <result property="lng" column="lng" jdbcType="VARCHAR"/>
+        <result property="isAlarms" column="is_alarms" jdbcType="INTEGER"/>
+        <result property="isDelete" column="is_delete" jdbcType="INTEGER"/>
+        <result property="isLine" column="is_line" jdbcType="INTEGER"/>
+        <result property="defaultTimescale" column="default_timescale" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <resultMap id="CpDeviceCorrelationTypeVo" type="com.coldchain.entity.vo.CpDeviceCorrelationTypeVo">
+        <result property="deviceName" column="device_name" jdbcType="VARCHAR"/>
+        <result property="deviceSn" column="device_sn" jdbcType="VARCHAR"/>
+        <result property="deviceType" column="device_type" jdbcType="VARCHAR"/>
+        <result property="deviceCompany" column="device_company" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="VARCHAR"/>
+        <result property="isLine" column="is_line" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="VARCHAR"/>
+        <result property="lat" column="lat" jdbcType="VARCHAR"/>
+        <result property="lng" column="lng" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, user_id, device_name, device_sn, device_type, sim_card, positioning_mode, device_manufacturer,
+          device_company, device_project, create_time, device_group, link_type, is_on, create_date, founder, modify_time, modifier,
+          lat,lng,is_alarms,is_delete,is_line,default_timescale
+        from coldchain_device.cp_device
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, user_id, device_name, device_sn, device_type, sim_card, positioning_mode, device_manufacturer,
+          device_company, device_project, create_time, device_group, link_type, is_on, create_date, founder, modify_time, modifier,
+          lat,lng,is_alarms,is_delete,is_line,default_timescale
+        from coldchain_device.cp_device
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        id, user_id, device_name, device_sn, device_type, sim_card, positioning_mode, device_manufacturer,
+        device_company, device_project, create_time, device_group, link_type, is_on, create_date, founder, modify_time,
+        modifier,
+        lat,lng,is_alarms,is_delete,is_line,default_timescale
+        from coldchain_device.cp_device
+        <where>
+            <if test="id != null and id != ''">
+                and id = #{id}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId}
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                and device_name = #{deviceName}
+            </if>
+            <if test="deviceSn != null and deviceSn != ''">
+                and device_sn = #{deviceSn}
+            </if>
+            <if test="deviceType != null and deviceType != ''">
+                and device_type = #{deviceType}
+            </if>
+            <if test="simCard != null and simCard != ''">
+                and sim_card = #{simCard}
+            </if>
+            <if test="positioningMode != null and positioningMode != ''">
+                and positioning_mode = #{positioningMode}
+            </if>
+            <if test="deviceManufacturer != null and deviceManufacturer != ''">
+                and device_manufacturer = #{deviceManufacturer}
+            </if>
+            <if test="deviceCompany != null and deviceCompany != ''">
+                and device_company = #{deviceCompany}
+            </if>
+            <if test="deviceProject != null and deviceProject != ''">
+                and device_project = #{deviceProject}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime}
+            </if>
+            <if test="deviceGroup != null and deviceGroup != ''">
+                and device_group = #{deviceGroup}
+            </if>
+            <if test="linkType != null and linkType != ''">
+                and link_type = #{linkType}
+            </if>
+            <if test="isOn != null and isOn != ''">
+                and is_on = #{isOn}
+            </if>
+            <if test="createDate != null and createDate != ''">
+                and create_date = #{createDate}
+            </if>
+            <if test="founder != null and founder != ''">
+                and founder = #{founder}
+            </if>
+            <if test="modifyTime != null and modifyTime != ''">
+                and modify_time = #{modifyTime}
+            </if>
+            <if test="modifier != null and modifier != ''">
+                and modifier = #{modifier}
+            </if>
+        </where>
+    </select>
+
+    <select id="devicePageByProjectId" resultType="com.common.dto.CpDeviceDto">
+        SELECT
+        <include refid="baseSql"/>
+        FROM
+        cp_device cd
+        JOIN nts_project_device npd
+        ON cd.`id` = npd.`device_id`
+        WHERE 1=1
+        and npd.`project_id` = #{projectId}
+        <if test="deviceName !=null and deviceName !=''">
+            and (cd.device_name like CONCAT(CONCAT('%',#{deviceName}),'%') or cd.device_sn like
+            CONCAT(CONCAT('%',#{deviceName}),'%') )
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cd.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cd.create_date) &lt;= #{end}
+        </if>
+
+    </select>
+    <select id="noUseDevice" resultType="com.coldchain.entity.vo.CpDeviceVo">
+        select
+        <include refid="baseSql"/>
+        from cp_device cd
+        where cd.u_id = #{userId}
+        and cd.id NOT in (SELECT npd.`device_id` FROM nts_project_device npd)
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into coldchain_device.cp_device(id,user_id, device_name, device_sn, device_type, sim_card,
+        positioning_mode, device_manufacturer,device_id, device_company, device_project, create_time, device_group,
+        link_type, is_on, create_date, founder, modify_time, modifier, device_no,
+        lat,lng,is_alarms,is_delete,is_line,default_timescale,u_id)
+        values (#{id},#{userId}, #{deviceName}, #{deviceSn}, #{deviceType}, #{simCard}, #{positioningMode},
+         #{deviceManufacturer},#{deviceId}, #{deviceCompany}, #{deviceProject}, #{createTime}, #{deviceGroup}, #{linkType},
+          #{isOn}, #{createDate}, #{founder}, #{modifyTime}, #{modifier},#{deviceNo},#{lat},#{lng},#{isAlarms},#{isDelete},#{isLine},#{defaultTimescale},
+        #{uId}
+          )
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update1">
+        update coldchain_device.cp_device
+        <set>
+            <if test="userId != null and userId != ''">
+                user_id = #{userId},
+            </if>
+            <if test="deviceName != null and deviceName != ''">
+                device_name = #{deviceName},
+            </if>
+            <if test="deviceSn != null and deviceSn != ''">
+                device_sn = #{deviceSn},
+            </if>
+            <if test="deviceType != null and deviceType != ''">
+                device_type = #{deviceType},
+            </if>
+            <if test="simCard != null and simCard != ''">
+                sim_card = #{simCard},
+            </if>
+            <if test="positioningMode != null and positioningMode != ''">
+                positioning_mode = #{positioningMode},
+            </if>
+            <if test="deviceManufacturer != null and deviceManufacturer != ''">
+                device_manufacturer = #{deviceManufacturer},
+            </if>
+            <if test="deviceCompany != null and deviceCompany != ''">
+                device_company = #{deviceCompany},
+            </if>
+            <if test="deviceProject != null and deviceProject != ''">
+                device_project = #{deviceProject},
+            </if>
+            <if test="createTime != null and createTime != ''">
+                create_time = #{createTime},
+            </if>
+            <if test="deviceGroup != null and deviceGroup != ''">
+                device_group = #{deviceGroup},
+            </if>
+            <if test="linkType != null and linkType != ''">
+                link_type = #{linkType},
+            </if>
+            <if test="isOn != null and isOn != ''">
+                is_on = #{isOn},
+            </if>
+            <if test="createDate != null and createDate != ''">
+                create_date = #{createDate},
+            </if>
+            <if test="founder != null and founder != ''">
+                founder = #{founder},
+            </if>
+            <if test="modifyTime != null and modifyTime != ''">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="modifier != null and modifier != ''">
+                modifier = #{modifier},
+            </if>
+            <if test="lat != null and lat != ''">
+                lat = #{lat},
+            </if>
+            <if test="lng != null and lng != ''">
+                lng = #{lng},
+            </if>
+            <if test="isAlarms != null and isAlarms != ''">
+                is_alarms = #{isAlarms},
+            </if>
+            <if test="isDelete != null and isDelete != ''">
+                is_delete = #{isDelete},
+            </if>
+            <if test="isLine != null and isLine != ''">
+                is_line = #{isLine},
+            </if>
+            <if test="defaultTimescale != null and defaultTimescale != ''">
+                default_timescale = #{defaultTimescale},
+            </if>
+            <if test="oemId != null and oemId != ''">
+                oem_id = #{oemId},
+            </if>
+            <if test="adminId != null and adminId != ''">
+                admin_id = #{adminId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from coldchain_device.cp_device where id = #{id}
+    </delete>
+    <!--统计设备数量-->
+    <select id="getDeviceNumberTotal" resultType="Integer">
+        select count(id) from coldchain_device.cp_device
+        <where>
+            <if test="isAlarms != null">
+                and is_alarms = #{isAlarms}
+            </if>
+            <if test="isDelete != null">
+                and is_delete = #{isDelete}
+            </if>
+            <if test="isLine != null">
+                and is_line = #{isLine}
+            </if>
+            <if test="adminId != null and adminId != ''">
+                and admin_id = #{adminId}
+            </if>
+            <if test="oemId != null and oemId != ''">
+                and oem_id = #{oemId}
+            </if>
+            <if test="uId != null and uId != ''">
+                and u_id = #{uId}
+            </if>
+        </where>
+    </select>
+    <select id="getDeviceRealTimeLocation" resultType="com.coldchain.entity.vo.CpDeviceVo">
+        select
+        id, user_id, device_name, device_sn, lat,lng,create_time, modify_time
+        from coldchain_device.cp_device
+        <where>
+            <if test="deviceName != null and deviceName != ''">
+                and device_name = #{deviceName}
+            </if>
+            <if test="deviceSn != null and deviceSn != ''">
+                and device_sn = #{deviceSn}
+            </if>
+            <if test="isAlarms != null">
+                and is_alarms = #{isAlarms}
+            </if>
+            <if test="isDelete != null">
+                and is_delete = #{isDelete}
+            </if>
+            <if test="isLine != null">
+                and is_line = #{isLine}
+            </if>
+            <if test="adminId != null and adminId != ''">
+                and admin_id = #{adminId}
+            </if>
+            <if test="oemId != null and oemId != ''">
+                and oem_id = #{oemId}
+            </if>
+            <if test="uId != null and uId != ''">
+                and u_id = #{uId}
+            </if>
+        </where>
+    </select>
+    <select id="getDeviceByGroupId" resultType="com.coldchain.entity.vo.CpDeviceVo">
+        select
+        id, user_id, device_name, device_sn, device_type, sim_card, positioning_mode, device_manufacturer,
+        device_company, device_project, create_time, device_group, link_type, is_on, create_date, founder, modify_time,
+        modifier,
+        lat,lng,is_alarms,is_delete,is_line,default_timescale
+        from coldchain_device.cp_device
+       where device_group = #{groupId}
+    </select>
+    <select id="getDeviceListByGroupId" resultType="com.common.dto.CpDeviceDto">
+        select
+        <include refid="baseSql"/>
+        from cp_device cd
+        <where>
+            <if test="deviceGroupId != null">
+                and cd.device_group =#{deviceGroupId}
+            </if>
+            <if test="userId != null">
+                and cd.u_id =#{userId}
+            </if>
+            <if test="search != null">
+                and (cd.device_name like CONCAT(CONCAT('%',#{search}),'%')
+                or cd.id like CONCAT(CONCAT('%',#{search}),'%') )
+            </if>
+        </where>
+    </select>
+    <select id="getDeviceByCompanyId" resultMap="CpDeviceCorrelationTypeVo">
+        select cd.device_name, cd.device_sn, cd.device_type, cd.device_company ,cd.create_time, cd.is_line,
+        cd.create_date, cd.lat, cd.lng, t.device_type_name
+        from cp_device cd left join cp_device_type t on cd.device_type = t.id
+        where cd.device_company = #{companyId}
+    </select>
+    <!--根据公司ID统计设备数量-->
+    <select id="getDeviceNumberTotalByCompanyId" resultType="Integer">
+        select count(id)
+        from cp_device cd
+        where cd.device_company = #{companyId}
+    </select>
+    <select id="devicePageByOemId" resultMap="CpDeviceCorrelationTypeVo">
+        select cd.device_name, cd.device_sn, cd.device_type, cd.device_company,cd.create_time,cd.is_line,
+        cd.create_date,cd.lat,cd.lng, t.device_type_name ,cd.id, cd.is_alarms
+        from cp_device cd left join cp_device_type t on cd.device_type = t.id
+        where 1=1
+        <if test="deviceName !=null and deviceName !=''">
+            and cd.device_name like CONCAT(CONCAT('%',#{deviceName}),'%')
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cd.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cd.create_date) &lt;= #{end}
+        </if>
+        <if test="deviceCompany !=null and deviceCompany !=''">
+            and cd.device_company= #{deviceCompany}
+        </if>
+        <if test="deviceType !=null and deviceType !=''">
+            and cd.device_type= #{deviceType}
+        </if>
+        <if test="oemId !=null">
+            and cd.oem_id= #{oemId}
+        </if>
+        order by cd.create_date desc
+    </select>
+
+    <select id="devicePageByUserId" resultMap="CpDeviceCorrelationTypeVo">
+        select cd.device_name, cd.device_sn, cd.device_type, cd.device_company,cd.create_time,cd.is_line,
+        cd.create_date,cd.lat,cd.lng, t.device_type_name , cd.id, cd.is_alarms
+        from cp_device cd left join cp_device_type t on cd.device_type = t.id
+        where 1=1
+        <if test="deviceName !=null and deviceName !=''">
+            and cd.device_name like CONCAT(CONCAT('%',#{deviceName}),'%')
+        </if>
+        <if test="userId !=null">
+            and cd.u_id= #{userId}
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cd.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cd.create_date) &lt;= #{end}
+        </if>
+        <if test="deviceCompany !=null and deviceCompany !=''">
+            and cd.device_company= #{deviceCompany}
+        </if>
+        <if test="deviceType !=null and deviceType !=''">
+            and cd.device_type= #{deviceType}
+        </if>
+        order by cd.create_date desc
+    </select>
+
+    <select id="devicePageByAdminId" resultMap="CpDeviceCorrelationTypeVo">
+        select cd.device_name, cd.device_sn, cd.device_type, cd.device_company,cd.create_time,cd.is_line,
+        cd.create_date,cd.lat,cd.lng, t.device_type_name ,cd.id , cd.is_alarms
+        from cp_device cd left join cp_device_type t on cd.device_type = t.id
+        where 1=1
+        <if test="deviceName !=null and deviceName !=''">
+            and cd.device_name like CONCAT(CONCAT('%',#{deviceName}),'%')
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cd.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cd.create_date) &lt;= #{end}
+        </if>
+        <if test="deviceCompany !=null and deviceCompany !=''">
+            and cd.device_company= #{deviceCompany}
+        </if>
+        <if test="deviceType !=null and deviceType !=''">
+            and cd.device_type= #{deviceType}
+        </if>
+        order by cd.create_date desc
+    </select>
+
+    <!--添加设备的时候通过Sn绑定Uidf-->
+    <update id="addByDeviceSn">
+        update coldchain_device.cp_device
+        <set>
+            <if test="Uid != null and Uid != ''">
+                u_id = #{Uid},
+            </if>
+            <if test="deviceProject != null and deviceProject != ''">
+                device_project = #{deviceProject},
+            </if>
+            <if test="deviceManufacturer != null and deviceManufacturer != ''">
+                device_manufacturer = #{deviceManufacturer},
+            </if>
+            <if test="deviceGroup != null and deviceGroup != ''">
+                device_group = #{deviceGroup},
+            </if>
+            <if test="deviceCompany != null and deviceCompany != ''">
+                device_company = #{deviceCompany},
+            </if>
+            <if test="deviceType != null and deviceType != ''">
+                device_type = #{deviceType},
+            </if>
+            <if test="createDate != null and createDate != ''">
+                create_date = #{createDate},
+            </if>
+            <if test="founder != null and founder != ''">
+                founder = #{founder},
+            </if>
+            <if test="isLine != null and isLine != ''">
+                is_line = #{isLine},
+            </if>
+            <if test="lat != null and lat != ''">
+                lat = #{lat},
+            </if>
+            <if test="lng != null and lng != ''">
+                lng = #{lng},
+            </if>
+            <if test="oemId != null and oemId != ''">
+                oem_id = #{oemId},
+            </if>
+            <if test="adminId != null and adminId != ''">
+                admin_id = #{adminId},
+            </if>
+        </set>
+        where device_sn = #{deviceSn}
+    </update>
+    <!--修改设备的时候通过Sn-->
+    <update id="updateByDeviceSn">
+        update coldchain_device.cp_device
+        <set>
+            <if test="Uid != null and Uid != ''">
+                u_id = #{Uid},
+            </if>
+            <if test="deviceProject != null and deviceProject != ''">
+                device_project = #{deviceProject},
+            </if>
+            <if test="deviceManufacturer != null and deviceManufacturer != ''">
+                device_manufacturer = #{deviceManufacturer},
+            </if>
+            <if test="deviceGroup != null and deviceGroup != ''">
+                device_group = #{deviceGroup},
+            </if>
+            <if test="deviceCompany != null and deviceCompany != ''">
+                device_company = #{deviceCompany},
+            </if>
+            <if test="deviceType != null and deviceType != ''">
+                device_type = #{deviceType},
+            </if>
+            <if test="createDate != null and createDate != ''">
+                create_date = #{createDate},
+            </if>
+            <if test="founder != null and founder != ''">
+                founder = #{founder},
+            </if>
+            <if test="isLine != null and isLine != ''">
+                is_line = #{isLine},
+            </if>
+            <if test="lat != null and lat != ''">
+                lat = #{lat},
+            </if>
+            <if test="lng != null and lng != ''">
+                lng = #{lng},
+            </if>
+            <if test="oemId != null and oemId != ''">
+                oem_id = #{oemId},
+            </if>
+            <if test="adminId != null and adminId != ''">
+                admin_id = #{adminId},
+            </if>
+        </set>
+        where device_sn = #{deviceSn}
+    </update>
+    <select id="getDeviceByUid" resultType="com.coldchain.entity.CpDevice">
+        select
+        device_name, device_id
+        from cp_device cd
+        where u_id = #{Uid}
+    </select>
+    <select id="getDeviceNumberTotalByCompany" resultType="Integer">
+        select count(id) from coldchain_device.cp_device
+        <where>
+            <if test="isAlarms != null">
+                and is_alarms = #{isAlarms}
+            </if>
+            <if test="isDelete != null">
+                and is_delete = #{isDelete}
+            </if>
+            <if test="isLine != null">
+                and is_line = #{isLine}
+            </if>
+            and device_company = #{deviceCompany}
+        </where>
+    </select>
+    <select id="deviceMapAppByUserId" resultType="com.common.dto.CpDeviceDto">
+        select
+        <include refid="baseSql"/>
+        from cp_device cd
+        WHERE 1=1
+        and cd.u_id = #{userId}
+        <if test="type != null ">
+            and cd.is_line = #{type}
+        </if>
+    </select>
+    <select id="search" resultType="com.common.dto.CpDeviceDto">
+        select
+        <include refid="baseSql"/>
+        from cp_device cd
+        WHERE 1=1
+        and cd.u_id = #{userId}
+        <if test="search != null and search != ''">
+            and (cd.device_name like CONCAT(CONCAT('%',#{search}),'%')
+            or cd.id like CONCAT(CONCAT('%',#{search}),'%')
+            )
+        </if>
+    </select>
+
+    <select id="getDeviceByUser" resultType="com.coldchain.entity.vo.CpDeviceVo">
+        select
+        <include refid="baseSql"/>
+        from cp_device cd
+        <where>
+            <if test="adminId != null and adminId != ''">
+                and admin_id = #{adminId}
+            </if>
+            <if test="oemId != null and oemId != ''">
+                and oem_id = #{oemId}
+            </if>
+            <if test="uid != null and uid != ''">
+                and u_id = #{uid}
+            </if>
+
+        </where>
+    </select>
+    <!--新增本地设备-->
+    <insert id="insertLocalDevice" keyProperty="id" useGeneratedKeys="true">
+        insert into coldchain_device.cp_device(id,user_id, device_name, device_sn, device_type, sim_card,
+        positioning_mode, device_manufacturer,device_id, device_company, device_project, create_time, device_group,
+        link_type, is_on, create_date, founder, modify_time, modifier, device_no,
+        lat,lng,is_alarms,is_delete,is_line,default_timescale,u_id, oem_id, admin_id)
+        values (#{id},#{userId}, #{deviceName}, #{deviceSn}, #{deviceType}, #{simCard}, #{positioningMode},
+        #{deviceManufacturer},#{deviceId}, #{deviceCompany}, #{deviceProject}, #{createTime}, #{deviceGroup}, #{linkType},
+        #{isOn}, #{createDate}, #{founder}, #{modifyTime}, #{modifier},#{deviceNo},#{lat},#{lng},#{isAlarms},#{isDelete},#{isLine},#{defaultTimescale},
+        #{uId}, #{oemId}, #{adminId}
+        )
+    </insert>
+
+
+</mapper>

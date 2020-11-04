@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.notices.mapper.NoticesUserTagMapper">
+
+    <resultMap type="NoticesUserTag" id="NoticesUserTagResult">
+        <result property="id" column="id"/>
+        <result property="noticeId" column="notice_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="isRead" column="is_read"/>
+        <result property="readTime" column="read_time"/>
+        <result property="accountType" column="account_type"/>
+    </resultMap>
+
+    <sql id="selectNoticesUserTagVo">
+        select id, notice_id, user_id, is_read, read_time, account_type from nts_notice_user_tag
+    </sql>
+
+    <select id="selectNoticesUserTagList" parameterType="NoticesUserTag" resultMap="NoticesUserTagResult">
+        <include refid="selectNoticesUserTagVo"/>
+        <where>
+            <if test="noticeId != null ">and notice_id = #{noticeId}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="isRead != null ">and is_read = #{isRead}</if>
+            <if test="readTime != null ">and read_time = #{readTime}</if>
+            <if test="accountType != null ">and account_type = #{accountType}</if>
+        </where>
+    </select>
+
+    <select id="selectNoticesUserTagById" parameterType="Long" resultMap="NoticesUserTagResult">
+        <include refid="selectNoticesUserTagVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertNoticesUserTag" parameterType="NoticesUserTag" useGeneratedKeys="true" keyProperty="id">
+        insert into nts_notice_user_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null ">notice_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="isRead != null ">is_read,</if>
+            <if test="readTime != null ">read_time,</if>
+            <if test="accountType != null ">account_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="noticeId != null ">#{noticeId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="isRead != null ">#{isRead},</if>
+            <if test="readTime != null ">#{readTime},</if>
+            <if test="accountType != null ">#{accountType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNoticesUserTag" parameterType="NoticesUserTag">
+        update nts_notice_user_tag
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="noticeId != null ">notice_id = #{noticeId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="isRead != null ">is_read = #{isRead},</if>
+            <if test="readTime != null ">read_time = #{readTime},</if>
+            <if test="accountType != null ">account_type = #{accountType},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNoticesUserTagById" parameterType="Long">
+        delete from nts_notice_user_tag where id = #{id}
+    </delete>
+
+    <delete id="deleteNoticesUserTagByIds" parameterType="String">
+        delete from nts_notice_user_tag where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectNoticesUserTagByNoticeId" parameterType="Long" resultMap="NoticesUserTagResult">
+        <include refid="selectNoticesUserTagVo"/>
+        where notice_id = #{noticeId}
+    </select>
+
+    <!-- 批量新增通告用户标记 -->
+    <insert id="insertNoticesUserTagBatch" parameterType="java.util.List" useGeneratedKeys="true"
+            keyProperty="deviceFlowAggId">
+        insert into nts_notice_user_tag
+        (
+        notice_id,
+        user_id,
+        is_read,
+        read_time,
+        account_type
+        )
+        <foreach collection="noticesUserTagList" item="item" open="VALUES" close=";" separator=",">
+            (
+            #{item.noticeId},
+            #{item.userId},
+            #{item.isRead},
+            #{item.readTime},
+            #{item.accountType}
+            )
+        </foreach>
+    </insert>
+</mapper>

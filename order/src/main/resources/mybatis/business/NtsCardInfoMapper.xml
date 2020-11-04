@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.card.mapper.NtsCardInfoMapper">
+
+    <resultMap type="NtsCardInfoVo" id="NtsCardInfoResult">
+        <result property="id"    column="id"    />
+        <result property="msisdn"    column="msisdn"    />
+        <result property="iccId"    column="icc_id"    />
+        <result property="imsi"    column="imsi"    />
+        <result property="carrier"    column="carrier"    />
+        <result property="spCode"    column="sp_code"    />
+        <result property="dataPlan"    column="data_plan"    />
+        <result property="expiryDate"    column="expiry_date"    />
+        <result property="dataUsage"    column="data_usage"    />
+        <result property="accountStatus"    column="account_status"    />
+        <result property="active"    column="active"    />
+        <result property="testValidDate"    column="test_valid_date"    />
+        <result property="silentValidDate"    column="silent_valid_date"    />
+        <result property="outboundDate"    column="outbound_date"    />
+        <result property="activeDate"    column="active_date"    />
+        <result property="supportSms"    column="support_sms"    />
+        <result property="dataBalance"    column="data_balance"    />
+        <result property="testUsedDataUsage"    column="test_used_data_usage"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="userId"    column="user_id"    />
+    </resultMap>
+
+    <sql id="selectNtsCardInfoVo">
+    SELECT
+      id,
+      msisdn,
+      icc_id,
+      imsi,
+      carrier,
+      sp_code,
+      data_plan,
+      expiry_date,
+      data_usage,
+      account_status,
+      active,
+      test_valid_date,
+      silent_valid_date,
+      outbound_date,
+      active_date,
+      support_sms,
+      data_balance,
+      test_used_data_usage,
+      create_time,
+      update_time,
+      device_id,
+      company_id,
+      user_id,
+      remark
+    FROM nts_card_info
+    </sql>
+    <insert id="insertCardInfo" useGeneratedKeys="true" keyProperty="id">
+    insert into nts_card_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="msisdn != null  and msisdn != ''">msisdn,</if>
+            <if test="iccId != null  and iccId != ''">icc_id,</if>
+            <if test="imsi != null  and imsi != ''">imsi,</if>
+            <if test="carrier != null  and carrier != ''">carrier,</if>
+            <if test="spCode != null  and spCode != ''">sp_code,</if>
+            <if test="dataPlan != null  and dataPlan != ''">data_plan,</if>
+            <if test="expiryDate != null ">expiry_date,</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage,</if>
+            <if test="accountStatus != null  and accountStatus != ''">account_status,</if>
+            <if test="active != null  and active != ''">active,</if>
+            <if test="testValidDate != null  ">test_valid_date,</if>
+            <if test="silentValidDate != null  ">silent_valid_date,</if>
+            <if test="outboundDate != null  ">outbound_date,</if>
+            <if test="activeDate != null  ">active_date,</if>
+            <if test="supportSms != null  ">support_sms,</if>
+            <if test="dataBalance != null  ">data_balance,</if>
+            <if test="testUsedDataUsage != null  ">test_used_data_usage,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null  ">update_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="deviceId != null  and deviceId != ''">device_id,</if>
+            <if test="companyId != null  and companyId != ''">company_id,</if>
+            <if test="userId != null  and userId != ''">user_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="msisdn != null  and msisdn != ''">#{msisdn},</if>
+            <if test="iccId != null  and iccId != ''">#{iccId},</if>
+            <if test="imsi != null  and imsi != ''">#{imsi},</if>
+            <if test="carrier != null  and carrier != ''">#{carrier},</if>
+            <if test="spCode != null  and spCode != ''">#{spCode},</if>
+            <if test="dataPlan != null  and dataPlan != ''">#{dataPlan},</if>
+            <if test="expiryDate != null ">#{expiryDate},</if>
+            <if test="dataUsage != null  and dataUsage != ''">#{dataUsage},</if>
+            <if test="accountStatus != null  and accountStatus != ''">#{accountStatus},</if>
+            <if test="active != null  and active != ''">#{active},</if>
+            <if test="testValidDate != null  ">#{testValidDate},</if>
+            <if test="silentValidDate != null ">#{silentValidDate},</if>
+            <if test="outboundDate != null  ">#{outboundDate},</if>
+            <if test="activeDate != null  ">#{activeDate},</if>
+            <if test="supportSms != null  ">#{supportSms},</if>
+            <if test="dataBalance != null  ">#{dataBalance},</if>
+            <if test="testUsedDataUsage != null  ">#{testUsedDataUsage},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null  ">#{updateTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="deviceId != null  and deviceId != ''">#{deviceId},</if>
+            <if test="companyId != null  and companyId != ''">#{companyId},</if>
+            <if test="userId != null  and userId != ''">#{userId},</if>
+        </trim>
+    </insert>
+    <update id="updateCardInfo" parameterType="NtsCardInfo">
+        update nts_card_info
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="msisdn != null  and msisdn != ''">msisdn = #{msisdn},</if>
+            <if test="iccId != null  and iccId != ''">icc_id = #{iccId},</if>
+            <if test="imsi != null  and imsi != ''">imsi = #{imsi},</if>
+            <if test="carrier != null  and carrier != ''">carrier = #{carrier},</if>
+            <if test="spCode != null  and spCode != ''">sp_code = #{spCode},</if>
+            <if test="dataPlan != null  and dataPlan != ''">data_plan = #{dataPlan},</if>
+            <if test="expiryDate != null ">expiry_date = #{expiryDate},</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage = #{dataUsage},</if>
+            <if test="accountStatus != null  and accountStatus != ''">account_status = #{accountStatus},</if>
+            <if test="active != null ">active = #{active},</if>
+            <if test="testValidDate != null ">test_valid_date = #{testValidDate},</if>
+            <if test="silentValidDate != null ">silent_valid_date = #{silentValidDate},</if>
+            <if test="outboundDate != null ">outbound_date = #{outboundDate},</if>
+            <if test="activeDate != null ">active_date = #{activeDate},</if>
+            <if test="supportSms != null ">support_sms = #{supportSms},</if>
+            <if test="dataBalance != null  and dataBalance != ''">data_balance = #{dataBalance},</if>
+            <if test="testUsedDataUsage != null  and testUsedDataUsage != ''">test_used_data_usage = #{testUsedDataUsage},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="deviceId != null ">device_id = #{deviceId},</if>
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <select id="selectNtsCardInfoList"  resultMap="NtsCardInfoResult">
+        <include refid="selectNtsCardInfoVo"/>
+        <where>
+            <if test="msisdn != null  and msisdn != ''"> and msisdn = #{msisdn}</if>
+            <if test="iccId != null  and iccId != ''"> and icc_id = #{iccId}</if>
+            <if test="imsi != null  and imsi != ''"> and imsi = #{imsi}</if>
+            <if test="carrier != null  and carrier != ''"> and carrier = #{carrier}</if>
+            <if test="spCode != null  and spCode != ''"> and sp_code = #{spCode}</if>
+            <if test="dataPlan != null  and dataPlan != ''"> and data_plan = #{dataPlan}</if>
+            <if test="expiryDate != null "> and expiry_date = #{expiryDate}</if>
+            <if test="dataUsage != null  and dataUsage != ''"> and data_usage = #{dataUsage}</if>
+            <if test="accountStatus != null  and accountStatus != ''"> and account_status = #{accountStatus}</if>
+            <if test="active != null "> and active = #{active}</if>
+            <if test="testValidDate != null "> and test_valid_date = #{testValidDate}</if>
+            <if test="silentValidDate != null "> and silent_valid_date = #{silentValidDate}</if>
+            <if test="outboundDate != null "> and outbound_date = #{outboundDate}</if>
+            <if test="activeDate != null "> and active_date = #{activeDate}</if>
+            <if test="supportSms != null "> and support_sms = #{supportSms}</if>
+            <if test="dataBalance != null  and dataBalance != ''"> and data_balance = #{dataBalance}</if>
+            <if test="testUsedDataUsage != null  and testUsedDataUsage != ''"> and test_used_data_usage = #{testUsedDataUsage}</if>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+        </where>
+    </select>
+    <select id="getSatStatus" resultType="java.util.Map">
+        select count(*) sum4G,
+               (
+                   select count(*)
+                   from nts_card_info
+                   where active = 1
+                     <if test="userId != null">and user_id = #{userId}</if>
+               )        activate4G,
+               (
+                   select count(*)
+                   from nts_card_info
+                   where active = 0
+                    <if test="userId != null ">and user_id = #{userId}</if>
+               )        noActivate4G,
+               (
+                   select count(*) from nts_card_info where active = 1 and account_status = 11 <if test="userId != null ">and user_id = #{userId}</if>
+               )        offLine4G,
+               (
+                   select count(*) from nts_card_info where active = 1 and account_status = 00 <if test="userId != null ">and user_id = #{userId}</if>
+               )        onLine4G,
+               (
+                   (select count(*) from nts_card_info where active = 1 and account_status = 12 <if test="userId != null ">and user_id = #{userId}</if>)
+               )        stopProtect4G,
+               (
+                   (select count(*) from nts_card_info where active = 1 and account_status = 02 <if test="userId != null ">and user_id = #{userId}</if>)
+               )        disable4G
+        from nts_card_info
+        where 1 = 1
+        <if test="userId != null ">and user_id = #{userId}</if>
+    </select>
+</mapper>

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceFlowPoolMapper">
+
+    <resultMap type="DeviceFlowPool" id="DeviceFlowPoolResult">
+        <result property="flowPoolId" column="flow_pool_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="surplusFlow" column="surplus_flow"/>
+        <result property="usedFlow" column="used_flow"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceFlowPoolVo">
+        select flow_pool_id,
+               device_id,
+               device_sn,
+               surplus_flow,
+               used_flow,
+               delete_flag,
+               create_time,
+               update_time
+        from nts_device_flow_pool
+    </sql>
+
+    <select id="selectDeviceFlowPoolList" parameterType="DeviceFlowPool" resultMap="DeviceFlowPoolResult">
+        <include refid="selectDeviceFlowPoolVo"/>
+        <where>
+            <if test="deviceId != null ">and device_id = #{deviceId}</if>
+            <if test="deviceSn != null  and deviceSn != ''">and device_sn = #{deviceSn}</if>
+            <if test="surplusFlow != null ">and surplus_flow = #{surplusFlow}</if>
+            <if test="usedFlow != null ">and used_flow = #{usedFlow}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceFlowPoolById" parameterType="Long" resultMap="DeviceFlowPoolResult">
+        <include refid="selectDeviceFlowPoolVo"/>
+        where flow_pool_id = #{flowPoolId}
+    </select>
+
+    <insert id="insertDeviceFlowPool" parameterType="DeviceFlowPool" useGeneratedKeys="true" keyProperty="flowPoolId">
+        insert into nts_device_flow_pool
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null ">device_id,</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn,</if>
+            <if test="surplusFlow != null ">surplus_flow,</if>
+            <if test="usedFlow != null ">used_flow,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null ">#{deviceId},</if>
+            <if test="deviceSn != null  and deviceSn != ''">#{deviceSn},</if>
+            <if test="surplusFlow != null ">#{surplusFlow},</if>
+            <if test="usedFlow != null ">#{usedFlow},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceFlowPool" parameterType="DeviceFlowPool">
+        update nts_device_flow_pool
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null ">device_id = #{deviceId},</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn = #{deviceSn},</if>
+            <if test="surplusFlow != null ">surplus_flow = #{surplusFlow},</if>
+            <if test="usedFlow != null ">used_flow = #{usedFlow},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where flow_pool_id = #{flowPoolId}
+    </update>
+
+    <delete id="deleteDeviceFlowPoolById" parameterType="Long">
+        delete
+        from nts_device_flow_pool
+        where flow_pool_id = #{flowPoolId}
+    </delete>
+
+    <delete id="deleteDeviceFlowPoolByIds" parameterType="String">
+        delete from nts_device_flow_pool where flow_pool_id in
+        <foreach item="flowPoolId" collection="array" open="(" separator="," close=")">
+            #{flowPoolId}
+        </foreach>
+    </delete>
+
+    <select id="queryByDeviceId" parameterType="Long" resultMap="DeviceFlowPoolResult">
+        <include refid="selectDeviceFlowPoolVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+
+    <select id="getFlowOrderDeviceCount" resultType="com.coldchain.project.business.card.domain.IndexFlowOrderDeviceCountVo">
+
+        select sum(ncfp.surplus_flow) surplusFlowSat, sum(ncfp.used_flow) usedFlowSat,
+               (select sum(nci.data_balance)
+                                                                              FROM nts_card_info nci
+                                                                              WHERE 1=1 <if test="companyId != null ">and  nci.company_id = #{companyId}</if>) surplusFlow4G,
+               (select sum(nci.data_usage)
+                                                                              FROM nts_card_info nci
+                                                                              WHERE 1=1 <if test="companyId != null  ">and nci.company_id =  #{companyId}</if>) usedFlow4G,
+               (
+                   SELECT count(*)
+                   FROM nts_order_company_flow nocf
+                   WHERE 1=1 and nocf.order_status = 2 <if test="companyId != null ">and nocf.company_id =  #{companyId}</if> and date_format(nocf.create_time, '%Y-%m') = date_format(now(), '%Y-%m') ) as monthOrder,
+               (
+                   SELECT count(*)
+                   FROM nts_order_company_flow nocf
+                   WHERE 1=1 and nocf.order_status = 2 <if test="companyId != null ">and nocf.company_id =  #{companyId}</if> and date_format(nocf.create_time, '%Y') = date_format(now(), '%Y') ) as yearOrder,
+               (
+                   SELECT count(*)
+                   FROM  nts_device nd
+                   WHERE 1=1 <if test="companyId != null ">and nd.company_id =  #{companyId}</if> and nd.activate = 1   ) as activateSat,
+               (
+                   SELECT count(*)
+                   FROM nts_device nd
+                   WHERE 1=1 <if test="companyId != null ">and nd.company_id =  #{companyId}</if> and nd.device_sn is not null ) as allDeviceSat,
+               (select count(*)
+                FROM nts_card_info nci
+                WHERE 1=1 <if test="companyId != null ">and nci.company_id = #{companyId}</if> and nci.active = 1) activate4G,
+               (select count(*)
+                FROM nts_card_info nci
+                WHERE 1=1 <if test="companyId != null ">and nci.company_id =  #{companyId}</if>) allDevice4G
+        FROM nts_company_flow_pool ncfp
+        WHERE 1=1 <if test="companyId != null ">and ncfp.company_id =  #{companyId}</if>
+
+    </select>
+
+    <select id="getBuyFlowOrderCount" resultType="java.util.Map">
+        select count(*)                             sum,
+               date_format(create_time, '%Y-%m-%d') date
+        from nts_order_company_flow
+        where 1 = 1
+          and date_format(create_time, '%Y-%m-%d') <![CDATA[>=]]> date_format(#{date}, '%Y-%m-%d')
+          and date_format(create_time, '%Y-%m-%d') <![CDATA[<=]]> date_format(now(), '%Y-%m-%d')
+          and create_user_id = #{userId}
+        group by date_format(create_time, '%Y-%m-%d');
+    </select>
+
+</mapper>

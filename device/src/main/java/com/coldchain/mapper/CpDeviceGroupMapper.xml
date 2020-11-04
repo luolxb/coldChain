@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.CpDeviceGroupMapper">
+
+    <sql id="baseSql">
+        cdg.id,
+        cdg.group_name,
+        cdg.group_company,
+        cdg.group_user,
+        cdg.remark,
+        cdg.create_date,
+        cdg.create_by,
+        cdg.update_date,
+        cdg.update_by
+    </sql>
+
+    <resultMap id="BaseResultMap" type="com.coldchain.entity.CpDeviceGroup">
+        <!--@Table cp_device_group-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="groupName" column="group_name" jdbcType="VARCHAR"/>
+        <result property="groupCompany" column="group_company" jdbcType="VARCHAR"/>
+        <result property="groupUser" column="group_user" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="deviceGroupPage" resultType="com.coldchain.entity.vo.CpDeviceGroupVo">
+        select <include refid="baseSql"/>
+        from cp_device_group cdg
+        where 1=1
+         <if test="groupName !=null and groupName !=''">
+           and  cdg.group_name like CONCAT(CONCAT('%',#{groupName}),'%')
+        </if>
+        <if test="userId !=null">
+            and cdg.group_user= #{userId}
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cdg.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cdg.create_date) &lt;= #{end}
+        </if>
+
+        order by cdg.create_date desc
+
+    </select>
+
+    <select id="getGroupByCompany" resultType="com.coldchain.entity.vo.CpGroupDeviceVo">
+        select <include refid="baseSql"/>
+        from cp_device_group cdg
+        where cdg.group_company = #{companyId}
+    </select>
+
+    <select id="getDeviceGroupByUserId" resultType="com.common.dto.CpDeviceGroupDto">
+        select <include refid="baseSql"/>
+        from cp_device_group cdg
+        where cdg.group_user = #{userId}
+    </select>
+
+
+</mapper>

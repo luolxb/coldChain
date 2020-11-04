@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.wallet.mapper.WalletRecordMapper">
+    
+    <resultMap type="WalletRecord" id="WalletRecordResult">
+        <result property="walletRecordId"    column="wallet_record_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="walletRecordSn"    column="wallet_record_sn"    />
+        <result property="fromUid"    column="from_uid"    />
+        <result property="toUid"    column="to_uid"    />
+        <result property="type"    column="type"    />
+        <result property="money"    column="money"    />
+        <result property="payModelId"    column="pay_model_id"    />
+        <result property="remark"    column="remark"    />
+        <result property="payStatus"    column="pay_status"    />
+        <result property="payTime"    column="pay_time"    />
+        <result property="fetchStatus"    column="fetch_status"    />
+        <result property="fetchTime"    column="fetch_time"    />
+        <result property="checkStatus"    column="check_status"    />
+        <result property="checkTime"    column="check_time"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWalletRecordVo">
+        select wallet_record_id, company_id, user_id, wallet_record_sn, from_uid, to_uid, type, money, pay_model_id, remark, pay_status, pay_time, fetch_status, fetch_time, check_status, check_time, create_time from nts_wallet_record
+    </sql>
+
+    <select id="selectWalletRecordList" parameterType="WalletRecord" resultMap="WalletRecordResult">
+        <include refid="selectWalletRecordVo"/>
+        <where>  
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''"> and wallet_record_sn = #{walletRecordSn}</if>
+            <if test="fromUid != null  and fromUid != ''"> and from_uid = #{fromUid}</if>
+            <if test="toUid != null  and toUid != ''"> and to_uid = #{toUid}</if>
+            <if test="type != null "> and type = #{type}</if>
+            <if test="money != null "> and money = #{money}</if>
+            <if test="payModelId != null "> and pay_model_id = #{payModelId}</if>
+            <if test="payStatus != null "> and pay_status = #{payStatus}</if>
+            <if test="payTime != null "> and pay_time = #{payTime}</if>
+            <if test="fetchStatus != null "> and fetch_status = #{fetchStatus}</if>
+            <if test="fetchTime != null "> and fetch_time = #{fetchTime}</if>
+            <if test="checkStatus != null "> and check_status = #{checkStatus}</if>
+            <if test="checkTime != null "> and check_time = #{checkTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectWalletRecordById" parameterType="Long" resultMap="WalletRecordResult">
+        <include refid="selectWalletRecordVo"/>
+        where wallet_record_id = #{walletRecordId}
+    </select>
+        
+    <insert id="insertWalletRecord" parameterType="WalletRecord" useGeneratedKeys="true" keyProperty="walletRecordId">
+        insert into nts_wallet_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">wallet_record_sn,</if>
+            <if test="fromUid != null  and fromUid != ''">from_uid,</if>
+            <if test="toUid != null  and toUid != ''">to_uid,</if>
+            <if test="type != null ">type,</if>
+            <if test="money != null ">money,</if>
+            <if test="payModelId != null ">pay_model_id,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="payStatus != null ">pay_status,</if>
+            <if test="payTime != null ">pay_time,</if>
+            <if test="fetchStatus != null ">fetch_status,</if>
+            <if test="fetchTime != null ">fetch_time,</if>
+            <if test="checkStatus != null ">check_status,</if>
+            <if test="checkTime != null ">check_time,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">#{walletRecordSn},</if>
+            <if test="fromUid != null  and fromUid != ''">#{fromUid},</if>
+            <if test="toUid != null  and toUid != ''">#{toUid},</if>
+            <if test="type != null ">#{type},</if>
+            <if test="money != null ">#{money},</if>
+            <if test="payModelId != null ">#{payModelId},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="payStatus != null ">#{payStatus},</if>
+            <if test="payTime != null ">#{payTime},</if>
+            <if test="fetchStatus != null ">#{fetchStatus},</if>
+            <if test="fetchTime != null ">#{fetchTime},</if>
+            <if test="checkStatus != null ">#{checkStatus},</if>
+            <if test="checkTime != null ">#{checkTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWalletRecord" parameterType="WalletRecord">
+        update nts_wallet_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">wallet_record_sn = #{walletRecordSn},</if>
+            <if test="fromUid != null  and fromUid != ''">from_uid = #{fromUid},</if>
+            <if test="toUid != null  and toUid != ''">to_uid = #{toUid},</if>
+            <if test="type != null ">type = #{type},</if>
+            <if test="money != null ">money = #{money},</if>
+            <if test="payModelId != null ">pay_model_id = #{payModelId},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="payStatus != null ">pay_status = #{payStatus},</if>
+            <if test="payTime != null ">pay_time = #{payTime},</if>
+            <if test="fetchStatus != null ">fetch_status = #{fetchStatus},</if>
+            <if test="fetchTime != null ">fetch_time = #{fetchTime},</if>
+            <if test="checkStatus != null ">check_status = #{checkStatus},</if>
+            <if test="checkTime != null ">check_time = #{checkTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where wallet_record_id = #{walletRecordId}
+    </update>
+
+    <delete id="deleteWalletRecordById" parameterType="Long">
+        delete from nts_wallet_record where wallet_record_id = #{walletRecordId}
+    </delete>
+
+    <delete id="deleteWalletRecordByIds" parameterType="String">
+        delete from nts_wallet_record where wallet_record_id in 
+        <foreach item="walletRecordId" collection="array" open="(" separator="," close=")">
+            #{walletRecordId}
+        </foreach>
+    </delete>
+    
+</mapper>

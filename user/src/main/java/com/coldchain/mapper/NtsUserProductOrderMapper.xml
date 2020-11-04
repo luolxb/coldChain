@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.NtsUserProductOrderMapper">
+    <select id="productOrderPage" resultType="com.coldchain.entity.vo.NtsUserProductOrderVo">
+        SELECT
+        nupo.*
+        FROM
+        nts_user_product_order nupo
+        where 1=1
+        <if test="userId != null">
+            and nupo.user_id =#{userId}
+        </if>
+        <if test="type != null and type !=''">
+            and nupo.pay_type =#{type}
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(nupo.create_time) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(nupo.create_time) &lt;= #{end}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceDetailsMapper">
+
+    <resultMap type="DeviceDetails" id="DeviceDetailsResult">
+        <result property="deviceDetailsId" column="device_details_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="carrierId" column="carrier_id"/>
+        <result property="account" column="account"/>
+        <result property="subaccount" column="subaccount"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="gatewayAccount" column="gateway_account"/>
+        <result property="satelliteModule" column="satellite_module"/>
+        <result property="satelliteSn" column="satellite_sn"/>
+        <result property="simOperator" column="sim_operator"/>
+        <result property="simSn" column="sim_sn"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceDetailsVo">
+        select device_details_id, device_id, company_id, user_id, device_sn, carrier_id, account, subaccount, price_plan, gateway_account, satellite_module, satellite_sn, sim_operator, sim_sn, delete_flag, create_time, update_time from nts_device_details
+    </sql>
+
+    <select id="selectDeviceDetailsList" parameterType="DeviceDetails" resultMap="DeviceDetailsResult">
+        <include refid="selectDeviceDetailsVo"/>
+        <where>
+            <if test="deviceId != null ">and device_id = #{deviceId}</if>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="deviceSn != null ">and device_sn = #{deviceSn}</if>
+            <if test="carrierId != null ">and carrier_id = #{carrierId}</if>
+            <if test="account != null  and account != ''">and account = #{account}</if>
+            <if test="subaccount != null  and subaccount != ''">and subaccount = #{subaccount}</if>
+            <if test="pricePlan != null  and pricePlan != ''">and price_plan = #{pricePlan}</if>
+            <if test="gatewayAccount != null  and gatewayAccount != ''">and gateway_account = #{gatewayAccount}</if>
+            <if test="satelliteModule != null ">and satellite_module = #{satelliteModule}</if>
+            <if test="satelliteSn != null  and satelliteSn != ''">and satellite_sn = #{satelliteSn}</if>
+            <if test="simOperator != null ">and sim_operator = #{simOperator}</if>
+            <if test="simSn != null  and simSn != ''">and sim_sn = #{simSn}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceDetailsById" parameterType="Long" resultMap="DeviceDetailsResult">
+        <include refid="selectDeviceDetailsVo"/>
+        where device_details_id = #{deviceDetailsId}
+    </select>
+
+    <insert id="insertDeviceDetails" parameterType="DeviceDetails" useGeneratedKeys="true"
+            keyProperty="deviceDetailsId">
+        insert into nts_device_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null ">device_id,</if>
+            <if test="companyId != null ">company_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="deviceSn != null ">device_sn,</if>
+            <if test="carrierId != null ">carrier_id,</if>
+            <if test="account != null  and account != ''">account,</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount,</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan,</if>
+            <if test="gatewayAccount != null  and gatewayAccount != ''">gateway_account,</if>
+            <if test="satelliteModule != null ">satellite_module,</if>
+            <if test="satelliteSn != null  and satelliteSn != ''">satellite_sn,</if>
+            <if test="simOperator != null ">sim_operator,</if>
+            <if test="simSn != null  and simSn != ''">sim_sn,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null ">#{deviceId},</if>
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="deviceSn != null ">#{deviceSn},</if>
+            <if test="carrierId != null ">#{carrierId},</if>
+            <if test="account != null  and account != ''">#{account},</if>
+            <if test="subaccount != null  and subaccount != ''">#{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">#{pricePlan},</if>
+            <if test="gatewayAccount != null  and gatewayAccount != ''">#{gatewayAccount},</if>
+            <if test="satelliteModule != null ">#{satelliteModule},</if>
+            <if test="satelliteSn != null  and satelliteSn != ''">#{satelliteSn},</if>
+            <if test="simOperator != null ">#{simOperator},</if>
+            <if test="simSn != null  and simSn != ''">#{simSn},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceDetails" parameterType="DeviceDetails">
+        update nts_device_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null ">device_id = #{deviceId},</if>
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="deviceSn != null ">device_sn = #{deviceSn},</if>
+            <if test="carrierId != null ">carrier_id = #{carrierId},</if>
+            <if test="account != null  and account != ''">account = #{account},</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount = #{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan = #{pricePlan},</if>
+            <if test="gatewayAccount != null  and gatewayAccount != ''">gateway_account = #{gatewayAccount},</if>
+            <if test="satelliteModule != null ">satellite_module = #{satelliteModule},</if>
+            <if test="satelliteSn != null  and satelliteSn != ''">satellite_sn = #{satelliteSn},</if>
+            <if test="simOperator != null ">sim_operator = #{simOperator},</if>
+            <if test="simSn != null  and simSn != ''">sim_sn = #{simSn},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where device_details_id = #{deviceDetailsId}
+    </update>
+
+    <delete id="deleteDeviceDetailsById" parameterType="Long">
+        delete from nts_device_details where device_details_id = #{deviceDetailsId}
+    </delete>
+
+    <delete id="deleteDeviceDetailsByIds" parameterType="String">
+        delete from nts_device_details where device_details_id in
+        <foreach item="deviceDetailsId" collection="array" open="(" separator="," close=")">
+            #{deviceDetailsId}
+        </foreach>
+    </delete>
+
+    <select id="queryByDeviceId" parameterType="Long" resultMap="DeviceDetailsResult">
+        <include refid="selectDeviceDetailsVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+</mapper>

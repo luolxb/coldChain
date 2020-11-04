@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.cardlog.mapper.NtsCardUsagedLogMapper">
+    
+    <resultMap type="NtsCardUsagedLog" id="NtsCardUsagedLogResult">
+        <result property="id"    column="id"    />
+        <result property="cardId"    column="card_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="date"    column="date"    />
+        <result property="dataUsage"    column="data_usage"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectNtsCardUsagedLogVo">
+        select id, card_id, create_time, update_time, date, data_usage, remark from nts_card_usaged_log
+    </sql>
+
+    <select id="selectNtsCardUsagedLogList" parameterType="NtsCardUsagedLog" resultMap="NtsCardUsagedLogResult">
+        <include refid="selectNtsCardUsagedLogVo"/>
+        <where>  
+            <if test="cardId != null "> and card_id = #{cardId}</if>
+            <if test="date != null ">
+                and date_format(date, '%Y-%m-%d') <![CDATA[=]]> date_format(#{date}, '%Y-%m-%d')
+             </if>
+            <if test="dataUsage != null  and dataUsage != ''"> and data_usage = #{dataUsage}</if>
+        </where>
+    </select>
+    
+    <select id="selectNtsCardUsagedLogById" parameterType="Long" resultMap="NtsCardUsagedLogResult">
+        <include refid="selectNtsCardUsagedLogVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertNtsCardUsagedLog" parameterType="NtsCardUsagedLog" useGeneratedKeys="true" keyProperty="id">
+        insert into nts_card_usaged_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cardId != null ">card_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="date != null ">date,</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cardId != null ">#{cardId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="date != null ">#{date},</if>
+            <if test="dataUsage != null  and dataUsage != ''">#{dataUsage},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNtsCardUsagedLog" parameterType="NtsCardUsagedLog">
+        update nts_card_usaged_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cardId != null ">card_id = #{cardId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="date != null ">date = #{date},</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage = #{dataUsage},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteNtsCardUsagedLogById" parameterType="Long">
+        delete from nts_card_usaged_log where id = #{id}
+    </delete>
+
+    <delete id="deleteNtsCardUsagedLogByIds" parameterType="String">
+        delete from nts_card_usaged_log where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+</mapper>

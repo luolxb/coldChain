@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.order.mapper.OrderDeviceFlowMapper">
+
+    <resultMap type="OrderDeviceFlow" id="OrderDeviceFlowResult">
+        <result property="orderDeviceFlowId" column="order_device_flow_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="deviceId" column="device_id"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="orderCode" column="order_code"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="flowPrice" column="flow_price"/>
+        <result property="orderPrice" column="order_price"/>
+        <result property="actualPrice" column="actual_price"/>
+        <result property="currencyTypeId" column="currency_type_id"/>
+        <result property="payModelId" column="pay_model_id"/>
+        <result property="payName" column="pay_name"/>
+        <result property="payCode" column="pay_code"/>
+        <result property="payStatus" column="pay_status"/>
+        <result property="payer" column="payer"/>
+        <result property="payCallback" column="pay_callback"/>
+        <result property="payTime" column="pay_time"/>
+        <result property="remark" column="remark"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap type="OrderDeviceFlowVo" id="OrderDeviceFlowVoResult">
+        <result property="orderId" column="order_id"/>
+        <result property="orderCode" column="order_code"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="carrier" column="carrier"/>
+        <result property="orderStatus" column="order_status"/>
+        <result property="actualPrice" column="actual_price"/>
+        <result property="plansName" column="plans_name"/>
+        <result property="flowNumber" column="flow_number"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectOrderDeviceFlowVo">
+        select order_device_flow_id, company_id, device_id, create_user_id, update_user_id, order_code, order_status, flow_price, order_price, actual_price, currency_type_id, pay_model_id, pay_name, pay_code, pay_status, payer, pay_callback, pay_time, remark, delete_flag, create_time, update_time from nts_order_device_flow
+    </sql>
+
+    <select id="selectOrderDeviceFlowList" parameterType="OrderDeviceFlow" resultMap="OrderDeviceFlowResult">
+        <include refid="selectOrderDeviceFlowVo"/>
+        <where>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="deviceId != null ">and device_id = #{deviceId}</if>
+            <if test="createUserId != null ">and create_user_id = #{createUserId}</if>
+            <if test="updateUserId != null ">and update_user_id = #{updateUserId}</if>
+            <if test="orderCode != null  and orderCode != ''">and order_code = #{orderCode}</if>
+            <if test="orderStatus != null ">and order_status = #{orderStatus}</if>
+            <if test="flowPrice != null ">and flow_price = #{flowPrice}</if>
+            <if test="orderPrice != null ">and order_price = #{orderPrice}</if>
+            <if test="actualPrice != null ">and actual_price = #{actualPrice}</if>
+            <if test="currencyTypeId != null ">and currency_type_id = #{currencyTypeId}</if>
+            <if test="payModelId != null ">and pay_model_id = #{payModelId}</if>
+            <if test="payName != null  and payName != ''">and pay_name like concat('%', #{payName}, '%')</if>
+            <if test="payCode != null  and payCode != ''">and pay_code = #{payCode}</if>
+            <if test="payStatus != null ">and pay_status = #{payStatus}</if>
+            <if test="payer != null  and payer != ''">and payer = #{payer}</if>
+            <if test="payCallback != null ">and pay_callback = #{payCallback}</if>
+            <if test="payTime != null ">and pay_time = #{payTime}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectOrderDeviceFlowById" parameterType="Long" resultMap="OrderDeviceFlowResult">
+        <include refid="selectOrderDeviceFlowVo"/>
+        where order_device_flow_id = #{orderDeviceFlowId}
+    </select>
+
+    <insert id="insertOrderDeviceFlow" parameterType="OrderDeviceFlow" useGeneratedKeys="true"
+            keyProperty="orderDeviceFlowId">
+        insert into nts_order_device_flow
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="deviceId != null ">device_id,</if>
+            <if test="createUserId != null ">create_user_id,</if>
+            <if test="updateUserId != null ">update_user_id,</if>
+            <if test="orderCode != null  and orderCode != ''">order_code,</if>
+            <if test="orderStatus != null ">order_status,</if>
+            <if test="flowPrice != null ">flow_price,</if>
+            <if test="orderPrice != null ">order_price,</if>
+            <if test="actualPrice != null ">actual_price,</if>
+            <if test="currencyTypeId != null ">currency_type_id,</if>
+            <if test="payModelId != null ">pay_model_id,</if>
+            <if test="payName != null  and payName != ''">pay_name,</if>
+            <if test="payCode != null  and payCode != ''">pay_code,</if>
+            <if test="payStatus != null ">pay_status,</if>
+            <if test="payer != null  and payer != ''">payer,</if>
+            <if test="payCallback != null ">pay_callback,</if>
+            <if test="payTime != null ">pay_time,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="deviceId != null ">#{deviceId},</if>
+            <if test="createUserId != null ">#{createUserId},</if>
+            <if test="updateUserId != null ">#{updateUserId},</if>
+            <if test="orderCode != null  and orderCode != ''">#{orderCode},</if>
+            <if test="orderStatus != null ">#{orderStatus},</if>
+            <if test="flowPrice != null ">#{flowPrice},</if>
+            <if test="orderPrice != null ">#{orderPrice},</if>
+            <if test="actualPrice != null ">#{actualPrice},</if>
+            <if test="currencyTypeId != null ">#{currencyTypeId},</if>
+            <if test="payModelId != null ">#{payModelId},</if>
+            <if test="payName != null  and payName != ''">#{payName},</if>
+            <if test="payCode != null  and payCode != ''">#{payCode},</if>
+            <if test="payStatus != null ">#{payStatus},</if>
+            <if test="payer != null  and payer != ''">#{payer},</if>
+            <if test="payCallback != null ">#{payCallback},</if>
+            <if test="payTime != null ">#{payTime},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOrderDeviceFlow" parameterType="OrderDeviceFlow">
+        update nts_order_device_flow
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="deviceId != null ">device_id = #{deviceId},</if>
+            <if test="createUserId != null ">create_user_id = #{createUserId},</if>
+            <if test="updateUserId != null ">update_user_id = #{updateUserId},</if>
+            <if test="orderCode != null  and orderCode != ''">order_code = #{orderCode},</if>
+            <if test="orderStatus != null ">order_status = #{orderStatus},</if>
+            <if test="flowPrice != null ">flow_price = #{flowPrice},</if>
+            <if test="orderPrice != null ">order_price = #{orderPrice},</if>
+            <if test="actualPrice != null ">actual_price = #{actualPrice},</if>
+            <if test="currencyTypeId != null ">currency_type_id = #{currencyTypeId},</if>
+            <if test="payModelId != null ">pay_model_id = #{payModelId},</if>
+            <if test="payName != null  and payName != ''">pay_name = #{payName},</if>
+            <if test="payCode != null  and payCode != ''">pay_code = #{payCode},</if>
+            <if test="payStatus != null ">pay_status = #{payStatus},</if>
+            <if test="payer != null  and payer != ''">payer = #{payer},</if>
+            <if test="payCallback != null ">pay_callback = #{payCallback},</if>
+            <if test="payTime != null ">pay_time = #{payTime},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where order_device_flow_id = #{orderDeviceFlowId}
+    </update>
+
+    <delete id="deleteOrderDeviceFlowById" parameterType="Long">
+        delete from nts_order_device_flow where order_device_flow_id = #{orderDeviceFlowId}
+    </delete>
+
+    <delete id="deleteOrderDeviceFlowByIds" parameterType="String">
+        delete from nts_order_device_flow where order_device_flow_id in
+        <foreach item="orderDeviceFlowId" collection="array" open="(" separator="," close=")">
+            #{orderDeviceFlowId}
+        </foreach>
+    </delete>
+
+    <select id="queryByCompanyId" parameterType="Long" resultMap="OrderDeviceFlowVoResult">
+        select
+           odf.order_device_flow_id as order_id,
+	       odf.order_code,
+	       d.device_sn,
+	       d.device_name,
+	       ddt.name as device_type,
+	       dc.name as carrier,
+	       odf.order_status,
+	       odf.actual_price,
+	       ofp.plans_name,
+	       ofp.flow_number,
+	       odf.create_time,
+	       odf.update_time
+        from
+           nts_order_device_flow as odf
+	       left join nts_device as d on d.device_id = odf.device_id
+	       left join nts_device_details as dd on dd.device_id = d.device_id
+	       left join nts_dict_device_type as ddt on ddt.device_type_id = d.device_type_id
+	       left join nts_dict_carrier as dc on dc.carrier_id = dd.carrier_id
+	       left join nts_order_flow_plans as ofp on ofp.order_id = odf.order_device_flow_id and ofp.order_type = 1
+        where 1=1
+           <if test="companyId != null ">
+               and odf.company_id = #{companyId}
+           </if>
+        order by
+           odf.create_time desc
+    </select>
+
+    <select id="queryOrderDeviceFlowByOrderCode" parameterType="String" resultMap="OrderDeviceFlowResult">
+        <include refid="selectOrderDeviceFlowVo"/>
+        where order_code = #{orderCode}
+    </select>
+</mapper>

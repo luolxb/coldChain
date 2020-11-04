@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.CpSensorDataMapper">
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into coldchain_device.cp_sensor_data(id,cp_sensor_id, msg, update_date, flag, sensor_name, user_name, device_id, user_id, sensor_id, unit, sensor_type, is_line, value, is_alarms, lat, lng, switcher)
+        values (#{id},#{cpSensorId}, #{msg}, #{updateDate}, #{flag}, #{sensorName}, #{userName}, #{deviceId}, #{userId}, #{sensorId}, #{unit}, #{sensorType}, #{isLine}, #{value}, #{isAlarms}, #{lat}, #{lng}, #{switcher})
+    </insert>
+    <select id="getNewSensorData" parameterType="String" resultType="com.coldchain.entity.vo.CpSensorDataVo">
+SELECT s.id,s.sensor_id,d.device_name,d.device_sn, sd.update_date, s.sensor_type, s.flag, s.sensor_name, s.user_id, s.device_id, s.unit, s.user_name, s.sensor_type, s.is_line, s.is_alarms, s.VALUE, s.lat, s.lng, s.switcher
+        FROM
+            (
+        SELECT
+            id,
+            cpsd.sensor_id,
+            max(cpsd.update_date) AS update_date
+        FROM
+            cp_sensor_data cpsd
+        WHERE
+            cpsd.sensor_id IN (SELECT cpdcs.sensor_id FROM cp_sensor cpdcs WHERE cpdcs.device_id =#{deviceId}) GROUP BY cpsd.sensor_id
+            ) sd
+            LEFT JOIN cp_sensor_data s ON sd.sensor_id = s.sensor_id and sd.update_date = s.update_date
+
+            LEFT JOIN  cp_device d ON d.id = s.device_id
+
+    </select>
+    <select id="getNewSensorDataBySensorId" parameterType="String" resultType="com.coldchain.entity.vo.CpSensorDataVo">
+       SELECT
+            id,
+            cp_sensor_id,
+            msg,
+            update_date,
+            flag,
+            sensor_name,
+            user_name,
+            device_id,
+            user_id,
+            sensor_id,
+            unit,
+            sensor_type,
+            is_line, VALUE , is_alarms, lat, lng, switcher
+        FROM
+            cp_sensor_data
+        WHERE
+            cp_sensor_id = #{cpSensorId} ORDER BY update_date DESC limit 1
+    </select>
+    <select id="getSensorDataStatisticsBySensorId" parameterType="String" resultType="com.coldchain.entity.vo.SenSorDataStatisticsVo">
+       SELECT max(value) as max_val,min(value) as min_val, avg(value) as avg_val
+        FROM
+            cp_sensor_data
+        WHERE
+            cp_sensor_id = #{cpSensorId}
+    </select>
+
+    <select id="getSensorDataHistoryBySensorId"  resultType="com.coldchain.entity.vo.CpSensorDataVo">
+       SELECT
+            id,
+            cp_sensor_id,
+            msg,
+            update_date,
+            flag,
+            sensor_name,
+            user_name,
+            device_id,
+            user_id,
+            sensor_id,
+            unit,
+            sensor_type,
+            is_line, VALUE , is_alarms, lat, lng, switcher
+        FROM
+            cp_sensor_data
+        WHERE
+            cp_sensor_id = #{cpSensorId}
+        <if test="start != null and start != ''"><!-- 开始时间检索 -->
+            AND date_format(update_date,'%y%m%d%H%i%s') &gt;= date_format(#{start},'%y%m%d%H%i%s')
+        </if>
+        <if test="end != null and end != ''"><!-- 结束时间检索 -->
+            AND date_format(update_date,'%y%m%d%H%i%s') &lt;= date_format(#{end},'%y%m%d%H%i%s')
+        </if>
+             ORDER BY update_date DESC
+    </select>
+    <select id="getDeviceHistoryTrack"  resultType="com.coldchain.entity.vo.TrackCoordVo">
+        SELECT
+        cpsd.lat, cpsd.lng, cpsd.update_date
+        FROM
+        cp_sensor_data cpsd
+        WHERE
+        cpsd.cp_sensor_id IN (
+        SELECT cpdcs.sensor_id FROM cp_device_correlation_sensor cpdcs WHERE cpdcs.device_id =#{deviceId})
+         and cpsd.lat is not null
+         and  cpsd.lng is not null
+        <if test="start != null and start != ''"><!-- 开始时间检索 -->
+            AND date_format(update_date,'%y%m%d%H%i%s') &gt;= date_format(#{start},'%y%m%d%H%i%s')
+        </if>
+        <if test="end != null and end != ''"><!-- 结束时间检索 -->
+            AND date_format(update_date,'%y%m%d%H%i%s') &lt;= date_format(#{end},'%y%m%d%H%i%s')
+        </if>
+         ORDER BY update_date
+    </select>
+    <select id="getSensorDataHistoryCurveBySensorId"  resultType="com.coldchain.entity.vo.SensorDataHistoryCurveVo">
+        SELECT
+        cpsd.lat, cpsd.lng,cpsd.sensor_id, cpsd.unit,cpsd.value,cpsd.update_date
+        FROM
+        cp_sensor_data cpsd
+        WHERE
+        cpsd.sensor_id = #{sensorId}
+        <if test="start != null and start != ''"><!-- 开始时间检索 -->
+            AND date_format(cpsd.update_date,'%y%m%d%H%i%s') &gt;= date_format(#{start},'%y%m%d%H%i%s')
+        </if>
+        <if test="end != null and end != ''"><!-- 结束时间检索 -->
+            AND date_format(cpsd.update_date,'%y%m%d%H%i%s') &lt;= date_format(#{end},'%y%m%d%H%i%s')
+        </if>
+        ORDER BY cpsd.update_date
+    </select>
+    <select id="sensorDataList" resultType="com.common.dto.CpSensorDataDto">
+        SELECT dd.* FROM (
+        SELECT csd.*
+         FROM cp_sensor_data csd
+         WHERE 1=1 AND csd.`device_id` = #{deviceId}
+          ORDER BY csd.`update_date` DESC LIMIT 10000000000)dd
+          GROUP BY dd.sensor_id
+          ORDER BY dd.`update_date` DESC
+
+    </select>
+    <select id="historyByDeviceIdApp" resultType="com.common.dto.CpSensorDataDto">
+        SELECT csd.*
+        FROM cp_sensor_data csd
+        WHERE 1=1
+        AND csd.`device_id` = #{deviceId}
+        <if test="start !=null">
+            and UNIX_TIMESTAMP(csd.update_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and UNIX_TIMESTAMP(csd.update_date) &lt;= #{end}
+        </if>
+        ORDER BY update_date DESC , csd.`cp_sensor_id` ASC
+
+    </select>
+    <select id="lineChart" resultType="com.common.dto.CpSensorDataDto">
+        SELECT csd.*
+        FROM cp_sensor_data csd
+        WHERE 1=1
+        AND csd.`device_id` = #{deviceId}
+        <if test="start !=null">
+            and UNIX_TIMESTAMP(csd.update_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and UNIX_TIMESTAMP(csd.update_date) &lt;= #{end}
+        </if>
+        ORDER BY update_date asc , csd.`cp_sensor_id` ASC
+    </select>
+    <select id="checkNowDate"  resultType="com.coldchain.entity.vo.CpSensorDataVo">
+        select id,cp_sensor_id, msg, update_date, flag, sensor_name, user_name, device_id, user_id, sensor_id, unit, sensor_type, is_line, value, is_alarms, lat, lng, switcher
+        FROM cp_sensor_data csd
+        where  csd.sensor_id = #{sensorId} AND date_format(csd.update_date,'%y%m%d%H%i%s') = date_format(#{updateDate},'%y%m%d%H%i%s')
+
+    </select>
+
+
+</mapper>

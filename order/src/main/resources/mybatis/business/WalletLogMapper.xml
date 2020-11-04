@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.wallet.mapper.WalletLogMapper">
+    
+    <resultMap type="WalletLog" id="WalletLogResult">
+        <result property="walletLogId"    column="wallet_log_id"    />
+        <result property="companyId"    column="company_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="walletRecordSn"    column="wallet_record_sn"    />
+        <result property="changeMoney"    column="change_money"    />
+        <result property="money"    column="money"    />
+        <result property="remark"    column="remark"    />
+        <result property="display"    column="display"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectWalletLogVo">
+        select wallet_log_id, company_id, user_id, wallet_record_sn, change_money, money, remark, display, create_time from nts_wallet_log
+    </sql>
+
+    <select id="selectWalletLogList" parameterType="WalletLog" resultMap="WalletLogResult">
+        <include refid="selectWalletLogVo"/>
+        <where>  
+            <if test="companyId != null "> and company_id = #{companyId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''"> and wallet_record_sn = #{walletRecordSn}</if>
+            <if test="changeMoney != null "> and change_money = #{changeMoney}</if>
+            <if test="money != null "> and money = #{money}</if>
+            <if test="display != null "> and display = #{display}</if>
+        </where>
+    </select>
+    
+    <select id="selectWalletLogById" parameterType="Long" resultMap="WalletLogResult">
+        <include refid="selectWalletLogVo"/>
+        where wallet_log_id = #{walletLogId}
+    </select>
+        
+    <insert id="insertWalletLog" parameterType="WalletLog" useGeneratedKeys="true" keyProperty="walletLogId">
+        insert into nts_wallet_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">wallet_record_sn,</if>
+            <if test="changeMoney != null ">change_money,</if>
+            <if test="money != null ">money,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+            <if test="display != null ">display,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">#{walletRecordSn},</if>
+            <if test="changeMoney != null ">#{changeMoney},</if>
+            <if test="money != null ">#{money},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+            <if test="display != null ">#{display},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateWalletLog" parameterType="WalletLog">
+        update nts_wallet_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="walletRecordSn != null  and walletRecordSn != ''">wallet_record_sn = #{walletRecordSn},</if>
+            <if test="changeMoney != null ">change_money = #{changeMoney},</if>
+            <if test="money != null ">money = #{money},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+            <if test="display != null ">display = #{display},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where wallet_log_id = #{walletLogId}
+    </update>
+
+    <delete id="deleteWalletLogById" parameterType="Long">
+        delete from nts_wallet_log where wallet_log_id = #{walletLogId}
+    </delete>
+
+    <delete id="deleteWalletLogByIds" parameterType="String">
+        delete from nts_wallet_log where wallet_log_id in 
+        <foreach item="walletLogId" collection="array" open="(" separator="," close=")">
+            #{walletLogId}
+        </foreach>
+    </delete>
+    
+</mapper>

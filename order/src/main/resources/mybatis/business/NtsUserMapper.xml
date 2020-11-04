@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.user.mapper.NtsUserMapper">
+
+    <resultMap type="NtsUser" id="NtsUserResult">
+        <result property="userId" column="user_id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="salt" column="salt"/>
+        <result property="nickname" column="nickname"/>
+        <result property="mobile" column="mobile"/>
+        <result property="gender" column="gender"/>
+        <result property="avatar" column="avatar"/>
+        <result property="accountTypeId" column="account_type_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="weixinOpenid" column="weixin_openid"/>
+        <result property="status" column="status"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="registerIp" column="register_ip"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="lastLoginIp" column="last_login_ip"/>
+        <result property="lastLoginTime" column="last_login_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isAdmin" column="is_admin"/>
+    </resultMap>
+
+    <sql id="selectNtsUserVo">
+        select user_id, username, password, salt, nickname, mobile, gender, avatar, account_type_id, company_id, weixin_openid, status, delete_flag, register_ip, register_time, last_login_ip, last_login_time, create_time, update_time,is_admin from nts_user
+    </sql>
+
+    <select id="selectNtsUserList" parameterType="NtsUser" resultMap="NtsUserResult">
+        <include refid="selectNtsUserVo"/>
+        <where>
+            <if test="username != null  and username != ''">and username like concat('%', #{username}, '%')</if>
+            <if test="password != null  and password != ''">and password = #{password}</if>
+            <if test="salt != null  and salt != ''">and salt = #{salt}</if>
+            <if test="nickname != null  and nickname != ''">and nickname like concat('%', #{nickname}, '%')</if>
+            <if test="mobile != null  and mobile != ''">and mobile = #{mobile}</if>
+            <if test="gender != null ">and gender = #{gender}</if>
+            <if test="avatar != null  and avatar != ''">and avatar = #{avatar}</if>
+            <if test="accountTypeId != null ">and account_type_id = #{accountTypeId}</if>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="weixinOpenid != null  and weixinOpenid != ''">and weixin_openid = #{weixinOpenid}</if>
+            <if test="status != null ">and status = #{status}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+            <if test="registerIp != null  and registerIp != ''">and register_ip = #{registerIp}</if>
+            <if test="registerTime != null ">and register_time = #{registerTime}</if>
+            <if test="lastLoginIp != null  and lastLoginIp != ''">and last_login_ip = #{lastLoginIp}</if>
+            <if test="lastLoginTime != null ">and last_login_time = #{lastLoginTime}</if>
+        </where>
+    </select>
+
+    <select id="selectNtsUserById" parameterType="Long" resultMap="NtsUserResult">
+        <include refid="selectNtsUserVo"/>
+        where user_id = #{userId}
+    </select>
+
+    <insert id="insertNtsUser" parameterType="NtsUser" useGeneratedKeys="true" keyProperty="userId">
+        insert into nts_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="username != null  and username != ''">username,</if>
+            <if test="password != null  and password != ''">password,</if>
+            <if test="salt != null  and salt != ''">salt,</if>
+            <if test="nickname != null  and nickname != ''">nickname,</if>
+            <if test="mobile != null  and mobile != ''">mobile,</if>
+            <if test="gender != null ">gender,</if>
+            <if test="avatar != null  and avatar != ''">avatar,</if>
+            <if test="accountTypeId != null ">account_type_id,</if>
+            <if test="companyId != null ">company_id,</if>
+            <if test="weixinOpenid != null  and weixinOpenid != ''">weixin_openid,</if>
+            <if test="status != null ">status,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="registerIp != null  and registerIp != ''">register_ip,</if>
+            <if test="registerTime != null ">register_time,</if>
+            <if test="lastLoginIp != null  and lastLoginIp != ''">last_login_ip,</if>
+            <if test="lastLoginTime != null ">last_login_time,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="primaryAccount != null ">primary_account,</if>
+            <if test="mailLeader != null ">mail_leader,</if>
+            <if test="businessLeader != null ">business_leader,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="username != null  and username != ''">#{username},</if>
+            <if test="password != null  and password != ''">#{password},</if>
+            <if test="salt != null  and salt != ''">#{salt},</if>
+            <if test="nickname != null  and nickname != ''">#{nickname},</if>
+            <if test="mobile != null  and mobile != ''">#{mobile},</if>
+            <if test="gender != null ">#{gender},</if>
+            <if test="avatar != null  and avatar != ''">#{avatar},</if>
+            <if test="accountTypeId != null ">#{accountTypeId},</if>
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="weixinOpenid != null  and weixinOpenid != ''">#{weixinOpenid},</if>
+            <if test="status != null ">#{status},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="registerIp != null  and registerIp != ''">#{registerIp},</if>
+            <if test="registerTime != null ">#{registerTime},</if>
+            <if test="lastLoginIp != null  and lastLoginIp != ''">#{lastLoginIp},</if>
+            <if test="lastLoginTime != null ">#{lastLoginTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="primaryAccount != null ">#{primaryAccount},</if>
+            <if test="mailLeader != null ">#{mailLeader},</if>
+            <if test="businessLeader != null ">#{businessLeader},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNtsUser" parameterType="NtsUser">
+        update nts_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="username != null  and username != ''">username = #{username},</if>
+            <if test="password != null  and password != ''">password = #{password},</if>
+            <if test="salt != null  and salt != ''">salt = #{salt},</if>
+            <if test="nickname != null  and nickname != ''">nickname = #{nickname},</if>
+            <if test="mobile != null  and mobile != ''">mobile = #{mobile},</if>
+            <if test="gender != null ">gender = #{gender},</if>
+            <if test="avatar != null  and avatar != ''">avatar = #{avatar},</if>
+            <if test="accountTypeId != null ">account_type_id = #{accountTypeId},</if>
+            <if test="weixinOpenid != null  and weixinOpenid != ''">weixin_openid = #{weixinOpenid},</if>
+            <if test="status != null ">status = #{status},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="registerIp != null  and registerIp != ''">register_ip = #{registerIp},</if>
+            <if test="registerTime != null ">register_time = #{registerTime},</if>
+            <if test="lastLoginIp != null  and lastLoginIp != ''">last_login_ip = #{lastLoginIp},</if>
+            <if test="lastLoginTime != null ">last_login_time = #{lastLoginTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="mailLeader != null ">mail_leader = #{mailLeader},</if>
+            <if test="businessLeader != null ">business_leader = #{businessLeader},</if>
+        </trim>
+        where 1=1
+        <if test="userId != null ">
+            and user_id = #{userId}
+        </if>
+        <if test="companyId != null ">
+            and company_id = #{companyId}
+        </if>
+    </update>
+
+    <delete id="deleteNtsUserById" parameterType="Long">
+        delete from nts_user where user_id = #{userId}
+    </delete>
+
+    <delete id="deleteNtsUserByIds" parameterType="String">
+        delete from nts_user where user_id in
+        <foreach item="userId" collection="array" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+    <delete id="deleteNtsUserByCompanyIds" parameterType="string">
+        delete from nts_user where company_id in
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </delete>
+
+    <select id="queryByMobile" parameterType="String" resultMap="NtsUserResult">
+        <include refid="selectNtsUserVo"/>
+        where mobile = #{mobile}
+    </select>
+
+    <select id="queryByUsername" parameterType="String" resultMap="NtsUserResult">
+        <include refid="selectNtsUserVo"/>
+        where username = #{username}
+    </select>
+
+
+    <select id="getCompanyListServer" resultType="com.coldchain.project.business.company.vo.CompanyListServerVo">
+        select nu.company_id      companyId,
+        nu.user_id         userId,
+        nu.is_admin         isAdmin,
+        nu.username        userName,
+        nc.name            companyName,
+        nc.address            address,
+        nu.primary_account primaryAccount,
+        (select round((ncfp.surplus_flow / 1000 * 9), 2)
+        from nts_company_flow_pool ncfp
+        where 1 = 1
+        and ncfp.company_id = nu.company_id
+        and nu.company_id =1
+        <if test="startDate != null and startDate != ''">
+            and date_format(ncfp.create_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">
+            and date_format(ncfp.create_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        </if>
+        )                  surplusFlow,
+        (select sum(nci.data_usage)
+        from nts_card_info nci
+        where 1 = 1
+        and nci.company_id = nu.company_id
+          and nu.company_id =1
+        <if test="startDate != null and startDate != ''">
+            and date_format(nci.create_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">
+            and date_format(nci.create_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        </if>        )                  cardSum,
+        (select round(sum(sum1) / 1024, 2)
+        from (
+        select ndfa.subscriber_id,
+        nd.company_id,
+        ndfa.statistics_time,
+        ifnull(ndfa.sms_mo, 0) +
+        ifnull(ndfa.sms_mt, 0) +
+        ifnull(ndfa.data_mo, 0) +
+        ifnull(ndfa.data_mt, 0) +
+        ifnull(ndfa.voice_mo, 0) +
+        ifnull(ndfa.voice_mt, 0) +
+        ifnull(ndfa.orbcomm_bytes, 0) sum1
+        from nts_device_flow_agg ndfa
+        join nts_device nd on ndfa.subscriber_id = nd.device_sn
+        join nts_company nc2 on nc2.company_id = nd.company_id
+        where 1 = 1
+        <if test="startDate != null and startDate != ''">
+            and date_format(ndfa.create_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">
+            and date_format(ndfa.create_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        </if>        ) dd
+        where 1 = 1
+        and dd.company_id = nu.company_id
+        and nu.delete_flag = 1
+        )                  satSum,
+        nu.business_leader businessLeader,
+        nu.mobile mobile,
+        nu.mail_leader mailLeader,
+        nu.create_time createTime
+        from nts_user nu
+        join nts_company nc on nu.company_id = nc.company_id
+        where 1 = 1
+        <if test="startDate != null and startDate != ''">
+            and date_format(nu.create_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">
+            and date_format(nu.create_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        </if>
+        <if test="companyName != null and companyName != ''">
+            and nc.name like  concat('%', #{companyName}, '%')
+        </if>
+        and nc.delete_flag = 1
+        order by nu.create_time desc
+
+    </select>
+    <select id="selectCompanyUserVo" resultType="com.coldchain.project.business.user.vo.CompanyUserVo">
+        select nu.user_id userId,
+               nc.name companyName,
+               nc.company_id companyId,
+               nu.primary_account primaryAccount,
+               round((select ncfp.surplus_flow from nts_company_flow_pool ncfp where ncfp.company_id = nu.company_id ) /1000 * 9,2) balance,
+               nu.business_leader businessLeader,
+               nu.mobile mobile,
+               nu.mail_leader mailLeader,
+               nc.address,
+               nu.create_time createTime
+        from nts_user nu
+                 join nts_company nc on nu.company_id = nc.company_id
+        <where>
+            <if test="companyName != null and companyName != ''">
+                and  nc.name like  concat('%',#{companyName},'%')
+            </if>
+            <if test="primaryAccount != null and primaryAccount != ''">
+                and  nu.primary_account like  concat('%',#{primaryAccount},'%')
+            </if>
+            <if test="businessLeader != null and businessLeader != ''">
+                and  nu.primary_account like  concat('%',#{businessLeader},'%')
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and  nu.mobile like  concat('%',#{mobile},'%')
+            </if>
+            <if test="mailLeader != null and mailLeader != ''">
+                and  nu.mail_leader like  concat('%',#{mailLeader},'%')
+            </if>
+            <if test="address != null and address != ''">
+                and  nc.address like  concat('%',#{address},'%')
+            </if>
+        and nc.delete_flag =1
+        and nu.delete_flag = 1
+        </where>
+        order by nu.create_time desc
+
+    </select>
+
+</mapper>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>title</title>
+</head>
+<body tabindex="0" role="listitem" style="">
+	<div style="position:relative;width:100%;">
+		<div style="position:relative;width:100%;height:40px;line-height:40px;border:1px solid #d7d7d7;text-align:center;">
+			<div style="position:relative;float:left;width:25%;border-left:1px solid #d7d7d7;margin-left:0px;" th:text="${name}">--</div>
+			<div style="position:relative;float:left;width:25%;border-left:1px solid #d7d7d7;margin-left:0px;" th:text="${start}">--</div>
+			<div style="position:relative;float:left;width:25%;border-left:1px solid #d7d7d7;margin-left:0px;" th:text="${end}">--</div>
+			<div style="position:relative;float:left;width:25%;border-left:1px solid #d7d7d7;margin-left:0px;">
+				<a th:href="${href}">立即下载</a>
+			</div>
+		</div>
+	</div> 
+</body>
+</html>

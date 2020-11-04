@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.CpTriggerMapper">
+
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into coldchain_device.cp_trigger(id,device_id, sensor_id, link_user_id, link_device_id, link_sensor_id, alarm_type, height_value, below_value, duration, target_model, contacts, is_forward, forward_device_id, forward_sensor_id, forward_data_type, forward_value, tip_msg, status, create_date, create_by, update_daate, update_by)
+        values (#{id},#{deviceId}, #{sensorId}, #{linkUserId}, #{linkDeviceId}, #{linkSensorId}, #{alarmType}, #{heightValue}, #{belowValue}, #{duration}, #{targetModel}, #{contacts}, #{isForward}, #{forwardDeviceId}, #{forwardSensorId}, #{forwardDataType}, #{forwardValue}, #{tipMsg}, #{status}, #{createDate}, #{createBy}, #{updateDaate}, #{updateBy})
+    </insert>
+
+</mapper>

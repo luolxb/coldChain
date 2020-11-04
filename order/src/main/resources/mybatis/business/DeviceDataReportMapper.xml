@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceDataReportMapper">
+
+    <resultMap type="DeviceDataReport" id="DeviceDataReportResult">
+        <result property="deviceDataReportId" column="device_data_report_id"/>
+        <result property="account" column="account"/>
+        <result property="organization" column="organization"/>
+        <result property="timeZone" column="time_zone"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="deviceEvent" column="device_event"/>
+        <result property="deviceTime" column="device_time"/>
+        <result property="deviceTimeLocal" column="device_time_local"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="deviceSpeed" column="device_speed"/>
+        <result property="gpsAddress" column="gps_address"/>
+        <result property="gpsMode" column="gps_mode"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="satellitesUsed" column="satellites_used"/>
+        <result property="temperature" column="temperature"/>
+        <result property="batteryVoltage" column="battery_voltage"/>
+        <result property="firmwareVersion" column="firmware_version"/>
+        <result property="readId" column="read_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceDataReportVo">
+        select device_data_report_id, account, organization, time_zone, device_sn, device_event, device_time, device_time_local, device_type, device_speed, gps_address, gps_mode, latitude, longitude, satellites_used, temperature, battery_voltage, firmware_version, read_id, create_time from nts_device_data_report
+    </sql>
+
+    <select id="selectDeviceDataReportList" parameterType="DeviceDataReport" resultMap="DeviceDataReportResult">
+        <include refid="selectDeviceDataReportVo"/>
+        <where>
+            <if test="account != null  and account != ''">and account = #{account}</if>
+            <if test="organization != null  and organization != ''">and organization = #{organization}</if>
+            <if test="timeZone != null  and timeZone != ''">and time_zone = #{timeZone}</if>
+            <if test="deviceSn != null  and deviceSn != ''">and device_sn = #{deviceSn}</if>
+            <if test="deviceEvent != null  and deviceEvent != ''">and device_event = #{deviceEvent}</if>
+            <if test="deviceTime != null ">and device_time = #{deviceTime}</if>
+            <if test="deviceTimeLocal != null ">and device_time_local = #{deviceTimeLocal}</if>
+            <if test="deviceType != null  and deviceType != ''">and device_type = #{deviceType}</if>
+            <if test="deviceSpeed != null  and deviceSpeed != ''">and device_speed = #{deviceSpeed}</if>
+            <if test="gpsAddress != null  and gpsAddress != ''">and gps_address = #{gpsAddress}</if>
+            <if test="gpsMode != null  and gpsMode != ''">and gps_mode = #{gpsMode}</if>
+            <if test="latitude != null  and latitude != ''">and latitude = #{latitude}</if>
+            <if test="longitude != null  and longitude != ''">and longitude = #{longitude}</if>
+            <if test="satellitesUsed != null  and satellitesUsed != ''">and satellites_used = #{satellitesUsed}</if>
+            <if test="temperature != null  and temperature != ''">and temperature = #{temperature}</if>
+            <if test="batteryVoltage != null  and batteryVoltage != ''">and battery_voltage = #{batteryVoltage}</if>
+            <if test="firmwareVersion != null  and firmwareVersion != ''">and firmware_version = #{firmwareVersion}</if>
+            <if test="readId != null  and readId != ''">and read_id = #{readId}</if>
+        </where>
+        order by device_time desc
+    </select>
+
+    <select id="selectDeviceDataReportById" parameterType="Long" resultMap="DeviceDataReportResult">
+        <include refid="selectDeviceDataReportVo"/>
+        where device_data_report_id = #{deviceDataReportId}
+    </select>
+
+    <insert id="insertDeviceDataReport" parameterType="DeviceDataReport" useGeneratedKeys="true"
+            keyProperty="deviceDataReportId">
+        insert into nts_device_data_report
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account != null  and account != ''">account,</if>
+            <if test="organization != null  and organization != ''">organization,</if>
+            <if test="timeZone != null  and timeZone != ''">time_zone,</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn,</if>
+            <if test="deviceEvent != null  and deviceEvent != ''">device_event,</if>
+            <if test="deviceTime != null ">device_time,</if>
+            <if test="deviceTimeLocal != null ">device_time_local,</if>
+            <if test="deviceType != null  and deviceType != ''">device_type,</if>
+            <if test="deviceSpeed != null  and deviceSpeed != ''">device_speed,</if>
+            <if test="gpsAddress != null  and gpsAddress != ''">gps_address,</if>
+            <if test="gpsMode != null  and gpsMode != ''">gps_mode,</if>
+            <if test="latitude != null  and latitude != ''">latitude,</if>
+            <if test="longitude != null  and longitude != ''">longitude,</if>
+            <if test="satellitesUsed != null  and satellitesUsed != ''">satellites_used,</if>
+            <if test="temperature != null  and temperature != ''">temperature,</if>
+            <if test="batteryVoltage != null  and batteryVoltage != ''">battery_voltage,</if>
+            <if test="firmwareVersion != null  and firmwareVersion != ''">firmware_version,</if>
+            <if test="readId != null  and readId != ''">read_id,</if>
+            <if test="createTime != null ">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="account != null  and account != ''">#{account},</if>
+            <if test="organization != null  and organization != ''">#{organization},</if>
+            <if test="timeZone != null  and timeZone != ''">#{timeZone},</if>
+            <if test="deviceSn != null  and deviceSn != ''">#{deviceSn},</if>
+            <if test="deviceEvent != null  and deviceEvent != ''">#{deviceEvent},</if>
+            <if test="deviceTime != null ">#{deviceTime},</if>
+            <if test="deviceTimeLocal != null ">#{deviceTimeLocal},</if>
+            <if test="deviceType != null  and deviceType != ''">#{deviceType},</if>
+            <if test="deviceSpeed != null  and deviceSpeed != ''">#{deviceSpeed},</if>
+            <if test="gpsAddress != null  and gpsAddress != ''">#{gpsAddress},</if>
+            <if test="gpsMode != null  and gpsMode != ''">#{gpsMode},</if>
+            <if test="latitude != null  and latitude != ''">#{latitude},</if>
+            <if test="longitude != null  and longitude != ''">#{longitude},</if>
+            <if test="satellitesUsed != null  and satellitesUsed != ''">#{satellitesUsed},</if>
+            <if test="temperature != null  and temperature != ''">#{temperature},</if>
+            <if test="batteryVoltage != null  and batteryVoltage != ''">#{batteryVoltage},</if>
+            <if test="firmwareVersion != null  and firmwareVersion != ''">#{firmwareVersion},</if>
+            <if test="readId != null  and readId != ''">#{readId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceDataReport" parameterType="DeviceDataReport">
+        update nts_device_data_report
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="account != null  and account != ''">account = #{account},</if>
+            <if test="organization != null  and organization != ''">organization = #{organization},</if>
+            <if test="timeZone != null  and timeZone != ''">time_zone = #{timeZone},</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn = #{deviceSn},</if>
+            <if test="deviceEvent != null  and deviceEvent != ''">device_event = #{deviceEvent},</if>
+            <if test="deviceTime != null ">device_time = #{deviceTime},</if>
+            <if test="deviceTimeLocal != null ">device_time_local = #{deviceTimeLocal},</if>
+            <if test="deviceType != null  and deviceType != ''">device_type = #{deviceType},</if>
+            <if test="deviceSpeed != null  and deviceSpeed != ''">device_speed = #{deviceSpeed},</if>
+            <if test="gpsAddress != null  and gpsAddress != ''">gps_address = #{gpsAddress},</if>
+            <if test="gpsMode != null  and gpsMode != ''">gps_mode = #{gpsMode},</if>
+            <if test="latitude != null  and latitude != ''">latitude = #{latitude},</if>
+            <if test="longitude != null  and longitude != ''">longitude = #{longitude},</if>
+            <if test="satellitesUsed != null  and satellitesUsed != ''">satellites_used = #{satellitesUsed},</if>
+            <if test="temperature != null  and temperature != ''">temperature = #{temperature},</if>
+            <if test="batteryVoltage != null  and batteryVoltage != ''">battery_voltage = #{batteryVoltage},</if>
+            <if test="firmwareVersion != null  and firmwareVersion != ''">firmware_version = #{firmwareVersion},</if>
+            <if test="readId != null  and readId != ''">read_id = #{readId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where device_data_report_id = #{deviceDataReportId}
+    </update>
+
+    <delete id="deleteDeviceDataReportById" parameterType="Long">
+        delete from nts_device_data_report where device_data_report_id = #{deviceDataReportId}
+    </delete>
+
+    <delete id="deleteDeviceDataReportByIds" parameterType="String">
+        delete from nts_device_data_report where device_data_report_id in
+        <foreach item="deviceDataReportId" collection="array" open="(" separator="," close=")">
+            #{deviceDataReportId}
+        </foreach>
+    </delete>
+
+    <select id="queryByDeviceSnLimit" parameterType="String" resultMap="DeviceDataReportResult">
+        <include refid="selectDeviceDataReportVo"/>
+        where device_sn = #{deviceSn}
+        order by device_time desc limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.notices.mapper.NoticesMapper">
+
+    <resultMap type="Notices" id="NoticesResult">
+        <result property="noticeId" column="notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="releaseTime" column="release_time"/>
+        <result property="isUndo" column="is_undo"/>
+        <result property="undoTime" column="undo_time"/>
+        <result property="isDel" column="is_del"/>
+        <result property="delTime" column="del_time"/>
+        <result property="priority" column="priority"/>
+        <result property="noticeObjType" column="notice_obj_type"/>
+        <result property="accountType" column="account_type"/>
+    </resultMap>
+
+    <resultMap type="NoticesInfoVo" id="NoticesInfoVoResult">
+        <result property="noticeId" column="notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="releaseTime" column="release_time"/>
+        <result property="isUndo" column="is_undo"/>
+        <result property="undoTime" column="undo_time"/>
+        <result property="priority" column="priority"/>
+        <result property="noticeObjType" column="notice_obj_type"/>
+        <result property="accountType" column="account_type"/>
+        <result property="isRead" column="is_read"/>
+        <result property="readTime" column="read_time"/>
+    </resultMap>
+
+    <sql id="selectNoticesVo">
+        select notice_id, title, content, release_time, is_undo, undo_time, is_del, del_time, priority, notice_obj_type, account_type from nts_notice
+    </sql>
+
+    <select id="selectNoticesList" parameterType="Notices" resultMap="NoticesResult">
+        <include refid="selectNoticesVo"/>
+        <where>
+            <if test="title != null  and title != ''">and title = #{title}</if>
+            <if test="content != null  and content != ''">and content = #{content}</if>
+            <if test="releaseTime != null ">and release_time = #{releaseTime}</if>
+            <if test="isUndo != null ">and is_undo = #{isUndo}</if>
+            <if test="undoTime != null ">and undo_time = #{undoTime}</if>
+            <if test="isDel != null ">and is_del = #{isDel}</if>
+            <if test="delTime != null ">and del_time = #{delTime}</if>
+            <if test="priority != null ">and priority = #{priority}</if>
+            <if test="noticeObjType != null ">and notice_obj_type = #{noticeObjType}</if>
+            <if test="accountType != null ">and account_type = #{accountType}</if>
+        </where>
+    </select>
+
+    <select id="selectNoticesById" parameterType="Long" resultMap="NoticesResult">
+        <include refid="selectNoticesVo"/>
+        where notice_id = #{noticeId}
+    </select>
+
+    <insert id="insertNotices" parameterType="Notices" useGeneratedKeys="true" keyProperty="noticeId">
+        insert into nts_notice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">title,</if>
+            <if test="content != null  and content != ''">content,</if>
+            <if test="releaseTime != null ">release_time,</if>
+            <if test="isUndo != null ">is_undo,</if>
+            <if test="undoTime != null ">undo_time,</if>
+            <if test="isDel != null ">is_del,</if>
+            <if test="delTime != null ">del_time,</if>
+            <if test="priority != null ">priority,</if>
+            <if test="noticeObjType != null ">notice_obj_type,</if>
+            <if test="accountType != null ">account_type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null  and title != ''">#{title},</if>
+            <if test="content != null  and content != ''">#{content},</if>
+            <if test="releaseTime != null ">#{releaseTime},</if>
+            <if test="isUndo != null ">#{isUndo},</if>
+            <if test="undoTime != null ">#{undoTime},</if>
+            <if test="isDel != null ">#{isDel},</if>
+            <if test="delTime != null ">#{delTime},</if>
+            <if test="priority != null ">#{priority},</if>
+            <if test="noticeObjType != null ">#{noticeObjType},</if>
+            <if test="accountType != null ">#{accountType},</if>
+        </trim>
+    </insert>
+
+    <update id="updateNotices" parameterType="Notices">
+        update nts_notice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null  and title != ''">title = #{title},</if>
+            <if test="content != null  and content != ''">content = #{content},</if>
+            <if test="releaseTime != null ">release_time = #{releaseTime},</if>
+            <if test="isUndo != null ">is_undo = #{isUndo},</if>
+            <if test="undoTime != null ">undo_time = #{undoTime},</if>
+            <if test="isDel != null ">is_del = #{isDel},</if>
+            <if test="delTime != null ">del_time = #{delTime},</if>
+            <if test="priority != null ">priority = #{priority},</if>
+            <if test="noticeObjType != null ">notice_obj_type = #{noticeObjType},</if>
+            <if test="accountType != null ">account_type = #{accountType},</if>
+        </trim>
+        where notice_id = #{noticeId}
+    </update>
+
+    <delete id="deleteNoticesById" parameterType="Long">
+        delete from nts_notice where notice_id = #{noticeId}
+    </delete>
+
+    <delete id="deleteNoticesByIds" parameterType="String">
+        delete from nts_notice where notice_id in
+        <foreach item="noticeId" collection="array" open="(" separator="," close=")">
+            #{noticeId}
+        </foreach>
+    </delete>
+
+    <select id="queryNoticesList" resultMap="NoticesInfoVoResult">
+        select
+        n.notice_id,
+        n.title,
+        n.content,
+        n.release_time,
+        n.is_undo,
+        n.undo_time,
+        n.priority,
+        n.notice_obj_type,
+        n.account_type,
+        nut.is_read,
+        nut.read_time
+        from
+        nts_notice_user_tag as nut
+        left join nts_notice as n on n.notice_id = nut.notice_id
+        <where>
+            <if test="isRead != null ">and nut.is_read = #{isRead}</if>
+            <choose>
+                <when test="userId != null">
+                    and (nut.user_id = #{userId} or n.notice_obj_type = 3)
+                </when>
+                <otherwise>
+                    and n.notice_obj_type = 3
+                </otherwise>
+            </choose>
+            <if test="1==1 ">and n.is_del = 0 </if>
+            <if test="isUndo != null">
+                and n.is_undo = #{isUndo}
+            </if>
+            <if test="search != null and search != ''">
+            and CONCAT_WS(',', n.title,n.content) like concat('%',#{search},'%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and date_format(n.release_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">
+                and date_format(n.release_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        order by nut.id desc
+    </select>
+
+    <select id="queryNoticesListServer" resultMap="NoticesInfoVoResult">
+        <include refid="selectNoticesVo"/>
+        <where>
+            <if test="1==1 ">and is_del = 0 </if>
+            <if test="isUndo != null">
+                and is_undo = #{isUndo}
+            </if>
+            <if test="search != null and search != ''">
+                and CONCAT_WS(',',title,content) like concat('%',#{search},'%')
+            </if>
+            <if test="startDate != null and startDate != ''">
+                and date_format(release_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">
+                and date_format(release_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        order by release_time desc
+    </select>
+</mapper>

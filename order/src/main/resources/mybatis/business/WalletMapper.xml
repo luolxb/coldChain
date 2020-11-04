@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.wallet.mapper.WalletMapper">
+
+    <resultMap type="Wallet" id="WalletResult">
+        <result property="walletId" column="wallet_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="money" column="money"/>
+        <result property="payPassword" column="pay_password"/>
+        <result property="salt" column="salt"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectWalletVo">
+        select wallet_id, company_id, money, pay_password, salt, create_user_id, update_user_id, create_time, update_time from nts_wallet
+    </sql>
+
+    <select id="selectWalletList" parameterType="Wallet" resultMap="WalletResult">
+        <include refid="selectWalletVo"/>
+        <where>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="money != null ">and money = #{money}</if>
+            <if test="payPassword != null  and payPassword != ''">and pay_password = #{payPassword}</if>
+            <if test="salt != null  and salt != ''">and salt = #{salt}</if>
+            <if test="createUserId != null ">and create_user_id = #{createUserId}</if>
+            <if test="updateUserId != null ">and update_user_id = #{updateUserId}</if>
+        </where>
+    </select>
+
+    <select id="selectWalletById" parameterType="Long" resultMap="WalletResult">
+        <include refid="selectWalletVo"/>
+        where wallet_id = #{walletId}
+    </select>
+
+    <insert id="insertWallet" parameterType="Wallet" useGeneratedKeys="true" keyProperty="walletId">
+        insert into nts_wallet
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="money != null ">money,</if>
+            <if test="payPassword != null  and payPassword != ''">pay_password,</if>
+            <if test="salt != null  and salt != ''">salt,</if>
+            <if test="createUserId != null ">create_user_id,</if>
+            <if test="updateUserId != null ">update_user_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="money != null ">#{money},</if>
+            <if test="payPassword != null  and payPassword != ''">#{payPassword},</if>
+            <if test="salt != null  and salt != ''">#{salt},</if>
+            <if test="createUserId != null ">#{createUserId},</if>
+            <if test="updateUserId != null ">#{updateUserId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateWallet" parameterType="Wallet">
+        update nts_wallet
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="money != null ">money = #{money},</if>
+            <if test="payPassword != null  and payPassword != ''">pay_password = #{payPassword},</if>
+            <if test="salt != null  and salt != ''">salt = #{salt},</if>
+            <if test="createUserId != null ">create_user_id = #{createUserId},</if>
+            <if test="updateUserId != null ">update_user_id = #{updateUserId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where wallet_id = #{walletId}
+    </update>
+
+    <delete id="deleteWalletById" parameterType="Long">
+        delete from nts_wallet where wallet_id = #{walletId}
+    </delete>
+
+    <delete id="deleteWalletByIds" parameterType="String">
+        delete from nts_wallet where wallet_id in
+        <foreach item="walletId" collection="array" open="(" separator="," close=")">
+            #{walletId}
+        </foreach>
+    </delete>
+    <delete id="deleteWalletByCompanyIds" parameterType="string">
+        delete from nts_wallet where company_id in
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+
+    </delete>
+
+    <select id="selectWalletByCompanyId" parameterType="Long" resultMap="WalletResult">
+        <include refid="selectWalletVo"/>
+        where company_id = #{companyId}
+    </select>
+
+</mapper>

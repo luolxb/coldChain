@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.CpDeviceTypeMapper">
+
+    <sql id="baseSql">
+        cdt.id,
+        cdt.device_firm,
+        cdt.device_brand,
+        cdt.remark,
+        cdt.create_date,
+        cdt.create_by,
+        cdt.update_date,
+        cdt.update_by,
+        cdt.status,
+        cdt.device_type_name
+    </sql>
+    <resultMap id="BaseResultMap" type="com.coldchain.entity.CpDeviceType">
+        <!--@Table cp_device_type-->
+        <result property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="deviceFirm" column="device_firm" jdbcType="VARCHAR"/>
+        <result property="deviceBrand" column="device_brand" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="createBy" column="create_by" jdbcType="VARCHAR"/>
+        <result property="updateDate" column="update_date" jdbcType="TIMESTAMP"/>
+        <result property="updateBy" column="update_by" jdbcType="VARCHAR"/>
+        <result property="deviceTypeName" column="device_type_name" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="deviceTypePage" resultType="com.coldchain.entity.vo.CpDeviceTypeVo">
+        select <include refid="baseSql"/>
+        from cp_device_type cdt
+        where 1=1
+        <if test="deviceTypeName !=null and deviceTypeName !=''">
+            and cdt.device_type_name =#{deviceTypeName}
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(cdt.create_date) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(cdt.create_date) &lt;= #{end}
+        </if>
+    </select>
+
+
+</mapper>

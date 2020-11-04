@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceMapper">
+
+    <resultMap type="Device" id="DeviceResult">
+        <result property="deviceId" column="device_id"/>
+        <result property="companyId" column="company_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceTypeId" column="device_type_id"/>
+        <result property="deviceDesc" column="device_desc"/>
+        <result property="deviceVendorId" column="device_vendor_id"/>
+        <result property="activate" column="activate"/>
+        <result property="activateTime" column="activate_time"/>
+        <result property="deviceState" column="device_state"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="cardIccId" column="card_icc_id"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <resultMap type="DeviceListVo" id="DeviceListResult">
+        <result property="deviceId" column="device_id"/>
+        <result property="company" column="company"/>
+        <result property="account" column="account"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="iccid" column="iccid"/>
+        <result property="sllActivate" column="sll_activate"/>
+        <result property="sllActivateTime" column="sll_activate_time"/>
+        <result property="cardActivate" column="card_activate"/>
+        <result property="cardActivateTime" column="card_activate_time"/>
+        <result property="satelliteModule" column="satellite_module"/>
+        <result property="terminalType" column="terminal_type"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceVo">
+        select device_id, company_id, user_id, device_name, device_type_id, device_desc, device_vendor_id, activate, activate_time, device_state, device_sn,card_icc_id, delete_flag, create_time, update_time from nts_device
+    </sql>
+
+    <select id="selectDeviceList" parameterType="Device" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        <where>
+            <if test="companyId != null ">and company_id = #{companyId}</if>
+            <if test="userId != null ">and user_id = #{userId}</if>
+            <if test="deviceName != null  and deviceName != ''">and device_name like concat('%', #{deviceName}, '%')
+            </if>
+            <if test="deviceTypeId != null ">and device_type_id = #{deviceTypeId}</if>
+            <if test="deviceDesc != null  and deviceDesc != ''">and device_desc = #{deviceDesc}</if>
+            <if test="deviceVendorId != null ">and device_vendor_id = #{deviceVendorId}</if>
+            <if test="activate != null ">and activate = #{activate}</if>
+            <if test="activateTime != null ">and activate_time = #{activateTime}</if>
+            <if test="deviceState != null ">and device_state = #{deviceState}</if>
+            <if test="deviceSn != null  and deviceSn != ''">and device_sn = #{deviceSn}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceById" parameterType="Long" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where device_id = #{deviceId}
+    </select>
+
+    <insert id="insertDevice" parameterType="Device" useGeneratedKeys="true" keyProperty="deviceId">
+        insert into nts_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">company_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="deviceName != null  and deviceName != ''">device_name,</if>
+            <if test="deviceTypeId != null ">device_type_id,</if>
+            <if test="deviceDesc != null  and deviceDesc != ''">device_desc,</if>
+            <if test="deviceVendorId != null ">device_vendor_id,</if>
+            <if test="activate != null ">activate,</if>
+            <if test="activateTime != null ">activate_time,</if>
+            <if test="deviceState != null ">device_state,</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="cardIccId != null ">card_icc_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="companyId != null ">#{companyId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="deviceName != null  and deviceName != ''">#{deviceName},</if>
+            <if test="deviceTypeId != null ">#{deviceTypeId},</if>
+            <if test="deviceDesc != null  and deviceDesc != ''">#{deviceDesc},</if>
+            <if test="deviceVendorId != null ">#{deviceVendorId},</if>
+            <if test="activate != null ">#{activate},</if>
+            <if test="activateTime != null ">#{activateTime},</if>
+            <if test="deviceState != null ">#{deviceState},</if>
+            <if test="deviceSn != null  and deviceSn != ''">#{deviceSn},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="cardIccId != null ">#{cardIccId},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDevice" parameterType="Device">
+        update nts_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="companyId != null ">company_id = #{companyId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="deviceName != null  and deviceName != ''">device_name = #{deviceName},</if>
+            <if test="deviceTypeId != null ">device_type_id = #{deviceTypeId},</if>
+            <if test="deviceDesc != null  and deviceDesc != ''">device_desc = #{deviceDesc},</if>
+            <if test="deviceVendorId != null ">device_vendor_id = #{deviceVendorId},</if>
+            <if test="activate != null ">activate = #{activate},</if>
+            <if test="activateTime != null ">activate_time = #{activateTime},</if>
+            <if test="deviceState != null ">device_state = #{deviceState},</if>
+            <if test="deviceSn != null  and deviceSn != ''">device_sn = #{deviceSn},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where device_id = #{deviceId}
+    </update>
+
+    <delete id="deleteDeviceById" parameterType="Long">
+        delete from nts_device where device_id = #{deviceId}
+    </delete>
+
+    <delete id="deleteDeviceByIds" parameterType="String">
+        delete from nts_device where device_id in
+        <foreach item="deviceId" collection="array" open="(" separator="," close=")">
+            #{deviceId}
+        </foreach>
+    </delete>
+
+    <select id="queryByDeviceSn" parameterType="String" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where device_sn = #{deviceSn}
+    </select>
+
+    <select id="selectCompanyIdAndDeviceSn" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where company_id = #{companyId} and device_sn = #{deviceSn}
+    </select>
+
+    <select id="selectListByLike" resultMap="DeviceListResult">
+        select
+        d.device_id,
+        c.name as company,
+        u.username as account,
+        d.device_sn,
+        d.card_icc_id as iccid,
+        d.activate as sll_activate,
+        d.activate_time as sll_activate_time,
+        ci.active as card_activate,
+        ci.active_date as card_activate_time,
+        dd.satellite_module,
+        ddt.name as terminal_type,
+        d.create_time,
+        d.update_time
+        from nts_device as d
+        left join nts_company as c on c.company_id = d.company_id
+        left join nts_user as u on u.user_id = d.user_id
+        left join nts_card_info as ci on ci.icc_id = d.card_icc_id
+        left join nts_dict_device_type as ddt on ddt.device_type_id = d.device_type_id
+        left join nts_device_details as dd on dd.device_id = d.device_id
+        <where>
+            <if test="companyId != null  ">and d.company_id = #{companyId}</if>
+            <if test="info != null  and info != ''">and CONCAT_WS(',',d.device_sn,d.card_icc_id,ddt.name) like
+                concat('%',#{info},'%')
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
+
+    <select id="queryDeviceList" resultMap="DeviceListResult">
+        select
+        d.device_id,
+        c.name as company,
+        u.username as account,
+        d.device_sn,
+        d.card_icc_id as iccid,
+        d.activate as sll_activate,
+        d.activate_time as sll_activate_time,
+        ci.active as card_activate,
+        ci.active_date as card_activate_time,
+        dd.satellite_module,
+        ddt.name as terminal_type,
+        d.create_time,
+        d.update_time
+        from
+        nts_device as d
+        left join nts_company as c on c.company_id = d.company_id
+        left join nts_user as u on u.user_id = d.user_id
+        left join nts_card_info as ci on ci.icc_id = d.card_icc_id
+        left join nts_dict_device_type as ddt on ddt.device_type_id = d.device_type_id
+        left join nts_device_details as dd on dd.device_id = d.device_id
+        <where>
+            <if test="companyId != null ">and d.company_id = #{companyId}</if>
+            <if test="deviceTypeIdList != null">and d.device_type_id in
+                <foreach collection="deviceTypeIdList" index="index" item="item" open="(" separator="," close=")">
+                    <if test="item != null ">
+                        #{item}
+                    </if>
+                </foreach>
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
+
+    <select id="countDeviceById" parameterType="Long" resultType="Integer">
+       select count(device_id) from nts_device where device_id = #{deviceId}
+    </select>
+
+    <select id="getSatStatus" resultType="java.util.Map">
+        select (select count(*) from nts_device where device_sn is not null <if test="userId != null ">and user_id = #{userId}</if> ) sumSat,
+               (
+                   select count(*) sum
+                   from nts_device
+                   where activate = 1
+                    <if test="userId != null ">and user_id = #{userId}</if>
+               )        activateSat,
+               (
+                   select count(*) sum
+                   from nts_device
+                   where activate = 0
+                        <if test="userId != null ">and user_id = #{userId}</if>
+               )        noActivateSat,
+               (
+                   select count(*) sum from nts_device where device_state = 0 and activate = 1 <if test="userId != null ">and user_id = #{userId}</if>
+               )        offLineSat,
+               (
+                   select count(*) sum from nts_device where device_state = 1 and activate = 1 <if test="userId != null ">and user_id = #{userId}</if>
+               )        onLineSat,
+               (
+                   select count(*) sum from nts_device where device_state = 4 and activate = 1 <if test="userId != null ">and user_id = #{userId}</if>
+               )        disableSat
+               from nts_device
+        where 1 = 1
+        <if test="userId != null ">and user_id = #{userId}</if>
+        group by sumSat
+
+    </select>
+
+
+    <select id="getDeviceVendorPercentage" resultType="java.util.Map">
+        select (select count(device_vendor_id) from nts_device where 1=1 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1) +
+               (select count(*) from nts_card_info where user_id = 1 <if test="userId != null ">and user_id = #{userId}</if> and active = 1) Sum,
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 2 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1 )  +
+               (select count(carrier) from nts_card_info nci where 1=1 <if test="userId != null ">and nci.user_id = #{userId}</if> and active = 1 and carrier = '中国电信') Telecom,
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 3 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1 ) Vodafone,
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 1 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1 ) Orbcomm,
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 4 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1 ) `InmarsatIDP`,
+               (select count(carrier) from nts_card_info nci where 1=1 <if test="userId != null ">and nci.user_id = #{userId}</if> and active = 1 and carrier = '中国联通') +
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 5 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1) Unicom,
+               (select count(carrier) from nts_card_info nci where 1=1 <if test="userId != null ">and nci.user_id = #{userId}</if> and active = 1 and carrier = '中国移动') +
+               (SELECT count(*) FROM nts_device WHERE device_vendor_id = 6 <if test="userId != null ">and user_id = #{userId}</if> and activate = 1) Mobile
+        from nts_device
+        where 1=1
+        <if test="userId != null ">and user_id = #{userId}</if>
+
+        group by sum
+    </select>
+
+    <select id="queryDeviceUsedByCompanyId" parameterType="Long" resultMap="DeviceResult">
+        <include refid="selectDeviceVo"/>
+        where company_id = #{companyId} and (activate = 1 or activate = 3)
+    </select>
+
+    <!-- 批量更新设备激活状态 -->
+    <update id="updateDeviceActivateBatch" parameterType="java.util.List">
+        update nts_device
+        <trim prefix="set" suffixOverrides=",">
+            <!--
+            <trim prefix="company_id = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.companyId != null">
+                        when device_id = #{item.deviceId} then #{item.companyId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="user_id = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.userId != null">
+                        when device_id = #{item.deviceId} then #{item.userId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_name = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceName != null  and item.deviceName != ''">
+                        when device_id = #{item.deviceId} then #{item.deviceName}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_type_id = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceTypeId != null">
+                        when device_id = #{item.deviceId} then #{item.deviceTypeId}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_desc = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceDesc != null  and item.deviceDesc != ''">
+                        when device_id = #{item.deviceId} then #{item.deviceDesc}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_vendor_id = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceVendorId != null">
+                        when device_id = #{item.deviceId} then #{item.deviceVendorId}
+                    </if>
+                </foreach>
+            </trim> -->
+            <trim prefix="activate = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.activate != null">
+                        when device_id = #{item.deviceId} then #{item.activate}
+                    </if>
+                </foreach>
+            </trim>
+            <!--
+            <trim prefix="activate_time = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.activateTime != null">
+                        when device_id = #{item.deviceId} then #{item.activateTime}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_state = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceState != null">
+                        when device_id = #{item.deviceId} then #{item.deviceState}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="device_sn = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deviceSn != null  and item.deviceSn != ''">
+                        when device_id = #{item.deviceId} then #{item.deviceSn}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="delete_flag = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.deleteFlag != null">
+                        when device_id = #{item.deviceId} then #{item.deleteFlag}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="create_time = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.createTime != null">
+                        when device_id = #{item.deviceId} then #{item.createTime}
+                    </if>
+                </foreach>
+            </trim> -->
+            <trim prefix="update_time = case" suffix="end,">
+                <foreach collection="deviceList" item="item" index="index">
+                    <if test="item.updateTime != null">
+                        when device_id = #{item.deviceId} then #{item.updateTime}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where
+        <foreach collection="deviceList" separator="or" item="item" index="index">
+            device_id = #{item.deviceId}
+        </foreach>
+    </update>
+
+</mapper>

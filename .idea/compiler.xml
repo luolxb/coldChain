@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="server" />
+        <module name="data" />
+        <module name="common" />
+        <module name="auth" />
+        <module name="sys-admin" />
+        <module name="admin" />
+        <module name="device" />
+        <module name="user" />
+        <module name="gateway" />
+        <module name="order" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="admin" target="1.8" />
+      <module name="auth" target="1.8" />
+      <module name="common" target="1.8" />
+      <module name="data" target="1.8" />
+      <module name="device" target="1.8" />
+      <module name="gateway" target="1.8" />
+      <module name="order" target="1.8" />
+      <module name="server" target="1.8" />
+      <module name="sys-admin" target="1.8" />
+      <module name="user" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="admin" options="-parameters" />
+      <module name="auth" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="data" options="-parameters" />
+      <module name="device" options="-parameters" />
+      <module name="gateway" options="-parameters" />
+      <module name="order" options="-parameters" />
+      <module name="server" options="-parameters" />
+      <module name="sys-admin" options="-parameters" />
+      <module name="user" options="-parameters" />
+    </option>
+  </component>
+</project>

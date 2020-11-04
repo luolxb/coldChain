@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.ValuationTypeMapper">
+    
+    <resultMap type="ValuationType" id="ValuationTypeResult">
+        <result property="valuationTypeId"    column="valuation_type_id"    />
+        <result property="name"    column="name"    />
+        <result property="descr"    column="descr"    />
+        <result property="months"    column="months"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectValuationTypeVo">
+        select valuation_type_id, name, descr, months, delete_flag, create_time, update_time from nts_dict_valuation_type
+    </sql>
+
+    <select id="selectValuationTypeList" parameterType="ValuationType" resultMap="ValuationTypeResult">
+        <include refid="selectValuationTypeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="months != null "> and months = #{months}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectValuationTypeById" parameterType="Integer" resultMap="ValuationTypeResult">
+        <include refid="selectValuationTypeVo"/>
+        where valuation_type_id = #{valuationTypeId}
+    </select>
+        
+    <insert id="insertValuationType" parameterType="ValuationType" useGeneratedKeys="true" keyProperty="valuationTypeId">
+        insert into nts_dict_valuation_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="months != null ">months,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="months != null ">#{months},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateValuationType" parameterType="ValuationType">
+        update nts_dict_valuation_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="months != null ">months = #{months},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where valuation_type_id = #{valuationTypeId}
+    </update>
+
+    <delete id="deleteValuationTypeById" parameterType="Integer">
+        delete from nts_dict_valuation_type where valuation_type_id = #{valuationTypeId}
+    </delete>
+
+    <delete id="deleteValuationTypeByIds" parameterType="String">
+        delete from nts_dict_valuation_type where valuation_type_id in 
+        <foreach item="valuationTypeId" collection="array" open="(" separator="," close=")">
+            #{valuationTypeId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.DataTypeMapper">
+    
+    <resultMap type="DataType" id="DataTypeResult">
+        <result property="dataTypeId"    column="data_type_id"    />
+        <result property="name"    column="name"    />
+        <result property="descr"    column="descr"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectDataTypeVo">
+        select data_type_id, name, descr, delete_flag, create_time, update_time from nts_dict_data_type
+    </sql>
+
+    <select id="selectDataTypeList" parameterType="DataType" resultMap="DataTypeResult">
+        <include refid="selectDataTypeVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectDataTypeById" parameterType="Integer" resultMap="DataTypeResult">
+        <include refid="selectDataTypeVo"/>
+        where data_type_id = #{dataTypeId}
+    </select>
+        
+    <insert id="insertDataType" parameterType="DataType" useGeneratedKeys="true" keyProperty="dataTypeId">
+        insert into nts_dict_data_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDataType" parameterType="DataType">
+        update nts_dict_data_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where data_type_id = #{dataTypeId}
+    </update>
+
+    <delete id="deleteDataTypeById" parameterType="Integer">
+        delete from nts_dict_data_type where data_type_id = #{dataTypeId}
+    </delete>
+
+    <delete id="deleteDataTypeByIds" parameterType="String">
+        delete from nts_dict_data_type where data_type_id in 
+        <foreach item="dataTypeId" collection="array" open="(" separator="," close=")">
+            #{dataTypeId}
+        </foreach>
+    </delete>
+    
+</mapper>

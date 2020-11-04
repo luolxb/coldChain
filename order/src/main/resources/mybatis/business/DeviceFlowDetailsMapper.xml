@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceFlowDetailsMapper">
+
+    <resultMap type="DeviceFlowDetails" id="DeviceFlowDetailsResult">
+        <result property="deviceFlowDetailsId" column="device_flow_details_id"/>
+        <result property="sortId" column="sort_id"/>
+        <result property="subscriberId" column="subscriber_id"/>
+        <result property="carrier" column="carrier"/>
+        <result property="account" column="account"/>
+        <result property="subaccount" column="subaccount"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="smsMo" column="sms_mo"/>
+        <result property="smsMt" column="sms_mt"/>
+        <result property="dataMo" column="data_mo"/>
+        <result property="dataMt" column="data_mt"/>
+        <result property="dataBoth" column="data_both"/>
+        <result property="voiceMo" column="voice_mo"/>
+        <result property="voiceMt" column="voice_mt"/>
+        <result property="orbcommReports" column="orbcomm_reports"/>
+        <result property="orbcommMessages" column="orbcomm_messages"/>
+        <result property="orbcommBytes" column="orbcomm_bytes"/>
+        <result property="usageTime" column="usage_time"/>
+        <result property="importTime" column="import_time"/>
+        <result property="statisticsTime" column="statistics_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="DeviceFlowDetailsVo" id="DeviceFlowDetailsVoResult">
+        <result property="deviceFlowDetailsId" column="device_flow_details_id"/>
+        <result property="company" column="company"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="deviceSn" column="subscriber_id"/>
+        <result property="activate" column="activate"/>
+        <result property="activateTime" column="activate_time"/>
+        <result property="carrier" column="carrier"/>
+        <result property="smsMo" column="sms_mo"/>
+        <result property="smsMt" column="sms_mt"/>
+        <result property="dataMo" column="data_mo"/>
+        <result property="dataMt" column="data_mt"/>
+        <result property="dataBoth" column="data_both"/>
+        <result property="voiceMo" column="voice_mo"/>
+        <result property="voiceMt" column="voice_mt"/>
+        <result property="orbcommReports" column="orbcomm_reports"/>
+        <result property="orbcommMessages" column="orbcomm_messages"/>
+        <result property="orbcommBytes" column="orbcomm_bytes"/>
+        <result property="usageTime" column="usage_time"/>
+        <result property="importTime" column="import_time"/>
+    </resultMap>
+
+    <sql id="selectDeviceFlowDetailsVo">
+        select device_flow_details_id, sort_id, subscriber_id, carrier, account, subaccount, price_plan, sms_mo, sms_mt, data_mo, data_mt, data_both, voice_mo, voice_mt, orbcomm_reports, orbcomm_messages, orbcomm_bytes, usage_time, import_time, statistics_time, create_time from nts_device_flow_details
+    </sql>
+
+    <select id="selectDeviceFlowDetailsList" parameterType="DeviceFlowDetails" resultMap="DeviceFlowDetailsResult">
+        <include refid="selectDeviceFlowDetailsVo"/>
+        <where>
+            <if test="sortId != null  and sortId != ''">and sort_id = #{sortId}</if>
+            <if test="subscriberId != null  and subscriberId != ''">and subscriber_id = #{subscriberId}</if>
+            <if test="carrier != null  and carrier != ''">and carrier = #{carrier}</if>
+            <if test="account != null  and account != ''">and account = #{account}</if>
+            <if test="subaccount != null  and subaccount != ''">and subaccount = #{subaccount}</if>
+            <if test="pricePlan != null  and pricePlan != ''">and price_plan = #{pricePlan}</if>
+            <if test="smsMo != null ">and sms_mo = #{smsMo}</if>
+            <if test="smsMt != null ">and sms_mt = #{smsMt}</if>
+            <if test="dataMo != null ">and data_mo = #{dataMo}</if>
+            <if test="dataMt != null ">and data_mt = #{dataMt}</if>
+            <if test="dataBoth != null ">and data_both = #{dataBoth}</if>
+            <if test="voiceMo != null ">and voice_mo = #{voiceMo}</if>
+            <if test="voiceMt != null ">and voice_mt = #{voiceMt}</if>
+            <if test="orbcommReports != null ">and orbcomm_reports = #{orbcommReports}</if>
+            <if test="orbcommMessages != null ">and orbcomm_messages = #{orbcommMessages}</if>
+            <if test="orbcommBytes != null ">and orbcomm_bytes = #{orbcommBytes}</if>
+            <if test="usageTime != null ">and usage_time = #{usageTime}</if>
+            <if test="importTime != null ">and import_time = #{importTime}</if>
+            <if test="statisticsTime != null ">and statistics_time = #{statisticsTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceFlowDetailsById" parameterType="Long" resultMap="DeviceFlowDetailsResult">
+        <include refid="selectDeviceFlowDetailsVo"/>
+        where device_flow_details_id = #{deviceFlowDetailsId}
+    </select>
+
+    <insert id="insertDeviceFlowDetails" parameterType="DeviceFlowDetails" useGeneratedKeys="true"
+            keyProperty="deviceFlowDetailsId">
+        insert into nts_device_flow_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="sortId != null  and sortId != ''">sort_id,</if>
+            <if test="subscriberId != null  and subscriberId != ''">subscriber_id,</if>
+            <if test="carrier != null  and carrier != ''">carrier,</if>
+            <if test="account != null  and account != ''">account,</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount,</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan,</if>
+            <if test="smsMo != null ">sms_mo,</if>
+            <if test="smsMt != null ">sms_mt,</if>
+            <if test="dataMo != null ">data_mo,</if>
+            <if test="dataMt != null ">data_mt,</if>
+            <if test="dataBoth != null ">data_both,</if>
+            <if test="voiceMo != null ">voice_mo,</if>
+            <if test="voiceMt != null ">voice_mt,</if>
+            <if test="orbcommReports != null ">orbcomm_reports,</if>
+            <if test="orbcommMessages != null ">orbcomm_messages,</if>
+            <if test="orbcommBytes != null ">orbcomm_bytes,</if>
+            <if test="usageTime != null ">usage_time,</if>
+            <if test="importTime != null ">import_time,</if>
+            <if test="statisticsTime != null ">statistics_time,</if>
+            <if test="createTime != null ">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="sortId != null  and sortId != ''">#{sortId},</if>
+            <if test="subscriberId != null  and subscriberId != ''">#{subscriberId},</if>
+            <if test="carrier != null  and carrier != ''">#{carrier},</if>
+            <if test="account != null  and account != ''">#{account},</if>
+            <if test="subaccount != null  and subaccount != ''">#{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">#{pricePlan},</if>
+            <if test="smsMo != null ">#{smsMo},</if>
+            <if test="smsMt != null ">#{smsMt},</if>
+            <if test="dataMo != null ">#{dataMo},</if>
+            <if test="dataMt != null ">#{dataMt},</if>
+            <if test="dataBoth != null ">#{dataBoth},</if>
+            <if test="voiceMo != null ">#{voiceMo},</if>
+            <if test="voiceMt != null ">#{voiceMt},</if>
+            <if test="orbcommReports != null ">#{orbcommReports},</if>
+            <if test="orbcommMessages != null ">#{orbcommMessages},</if>
+            <if test="orbcommBytes != null ">#{orbcommBytes},</if>
+            <if test="usageTime != null ">#{usageTime},</if>
+            <if test="importTime != null ">#{importTime},</if>
+            <if test="statisticsTime != null ">#{statisticsTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceFlowDetails" parameterType="DeviceFlowDetails">
+        update nts_device_flow_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="sortId != null  and sortId != ''">sort_id = #{sortId},</if>
+            <if test="subscriberId != null  and subscriberId != ''">subscriber_id = #{subscriberId},</if>
+            <if test="carrier != null  and carrier != ''">carrier = #{carrier},</if>
+            <if test="account != null  and account != ''">account = #{account},</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount = #{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan = #{pricePlan},</if>
+            <if test="smsMo != null ">sms_mo = #{smsMo},</if>
+            <if test="smsMt != null ">sms_mt = #{smsMt},</if>
+            <if test="dataMo != null ">data_mo = #{dataMo},</if>
+            <if test="dataMt != null ">data_mt = #{dataMt},</if>
+            <if test="dataBoth != null ">data_both = #{dataBoth},</if>
+            <if test="voiceMo != null ">voice_mo = #{voiceMo},</if>
+            <if test="voiceMt != null ">voice_mt = #{voiceMt},</if>
+            <if test="orbcommReports != null ">orbcomm_reports = #{orbcommReports},</if>
+            <if test="orbcommMessages != null ">orbcomm_messages = #{orbcommMessages},</if>
+            <if test="orbcommBytes != null ">orbcomm_bytes = #{orbcommBytes},</if>
+            <if test="usageTime != null ">usage_time = #{usageTime},</if>
+            <if test="importTime != null ">import_time = #{importTime},</if>
+            <if test="statisticsTime != null ">statistics_time = #{statisticsTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where device_flow_details_id = #{deviceFlowDetailsId}
+    </update>
+
+    <delete id="deleteDeviceFlowDetailsById" parameterType="Long">
+        delete from nts_device_flow_details where device_flow_details_id = #{deviceFlowDetailsId}
+    </delete>
+
+    <delete id="deleteDeviceFlowDetailsByIds" parameterType="String">
+        delete from nts_device_flow_details where device_flow_details_id in
+        <foreach item="deviceFlowDetailsId" collection="array" open="(" separator="," close=")">
+            #{deviceFlowDetailsId}
+        </foreach>
+    </delete>
+
+    <!--批量插入-->
+    <insert id="addDeviceFlowDetails" parameterType="java.util.List" useGeneratedKeys="true"
+            keyProperty="deviceFlowDetailsId">
+        insert into nts_device_flow_details
+        (
+        sort_id,
+        subscriber_id,
+        carrier,
+        account,
+        subaccount,
+        price_plan,
+        sms_mo,
+        sms_mt,
+        data_mo,
+        data_mt,
+        data_both,
+        voice_mo,
+        voice_mt,
+        orbcomm_reports,
+        orbcomm_messages,
+        orbcomm_bytes,
+        usage_time,
+        import_time,
+        statistics_time,
+        create_time
+        )
+        <foreach collection="deviceFlowDetailsList" item="item" open="VALUES" close=";" separator=",">
+            (
+            #{item.sortId},
+            #{item.subscriberId},
+            #{item.carrier},
+            #{item.account},
+            #{item.subaccount},
+            #{item.pricePlan},
+            #{item.smsMo},
+            #{item.smsMt},
+            #{item.dataMo},
+            #{item.dataMt},
+            #{item.dataBoth},
+            #{item.voiceMo},
+            #{item.voiceMt},
+            #{item.orbcommReports},
+            #{item.orbcommMessages},
+            #{item.orbcommBytes},
+            #{item.usageTime},
+            #{item.importTime},
+            #{item.statisticsTime},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <!--根据订阅ID(设备SN)，开始日期和结束日期查询流量详情-->
+    <!--<select id="queryFlowDetailsList" resultMap="DeviceFlowDetailsResult">-->
+    <!--<include refid="selectDeviceFlowDetailsVo"/>-->
+    <!--<where>-->
+    <!--<if test="subscriberId != null and subscriberId != ''"> and subscriber_id = #{subscriberId}</if>-->
+    <!--<if test="startDate != null and startDate != ''"> and date_format(usage_time,'%Y-%m-%d %H:%i:%s') <![CDATA[>=]]> #{startDate}</if>-->
+    <!--<if test="overDate != null and overDate != ''"> and date_format(usage_time,'%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> #{overDate}</if>-->
+    <!--</where>-->
+    <!--order by usage_time desc-->
+    <!--</select>-->
+
+    <select id="queryFlowDetailsList" resultMap="DeviceFlowDetailsVoResult">
+        select
+        dfd.device_flow_details_id,
+        c.name as company,
+        ddt.name as device_type,
+        dfd.subscriber_id,
+        d.activate,
+        d.activate_time,
+        dfd.carrier,
+        dfd.sms_mo,
+        dfd.sms_mt,
+        dfd.data_mo,
+        dfd.data_mt,
+        dfd.data_both,
+        dfd.voice_mo,
+        dfd.voice_mt,
+        dfd.orbcomm_reports,
+        dfd.orbcomm_messages,
+        dfd.orbcomm_bytes,
+        dfd.usage_time,
+        dfd.import_time
+        from nts_device_flow_details as dfd
+        left join nts_device as d on d.device_sn = dfd.subscriber_id
+        left join nts_company as c on c.company_id = d.company_id
+        left join nts_dict_device_type as ddt on ddt.device_type_id = d.device_type_id
+        <where>
+            <choose>
+                <when test="subscriberId != null and subscriberId != ''">and dfd.subscriber_id = #{subscriberId}</when>
+                <otherwise>
+                    and dfd.subscriber_id in(select nd.device_sn from nts_device as nd where 1 = 1
+                    <if test="companyId != null and companyId !=''">and nd.company_id = #{companyId}</if>
+                    and nd.activate = 1)
+                </otherwise>
+            </choose>
+            <if test="startDate != null and startDate != ''">and date_format(dfd.usage_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(dfd.usage_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        order by dfd.usage_time desc
+    </select>
+</mapper>

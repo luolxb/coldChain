@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.CompanyScaleMapper">
+    
+    <resultMap type="CompanyScale" id="CompanyScaleResult">
+        <result property="companyScaleId"    column="company_scale_id"    />
+        <result property="name"    column="name"    />
+        <result property="descr"    column="descr"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCompanyScaleVo">
+        select company_scale_id, name, descr, delete_flag, create_time, update_time from nts_dict_company_scale
+    </sql>
+
+    <select id="selectCompanyScaleList" parameterType="CompanyScale" resultMap="CompanyScaleResult">
+        <include refid="selectCompanyScaleVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectCompanyScaleById" parameterType="Integer" resultMap="CompanyScaleResult">
+        <include refid="selectCompanyScaleVo"/>
+        where company_scale_id = #{companyScaleId}
+    </select>
+        
+    <insert id="insertCompanyScale" parameterType="CompanyScale" useGeneratedKeys="true" keyProperty="companyScaleId">
+        insert into nts_dict_company_scale
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompanyScale" parameterType="CompanyScale">
+        update nts_dict_company_scale
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where company_scale_id = #{companyScaleId}
+    </update>
+
+    <delete id="deleteCompanyScaleById" parameterType="Integer">
+        delete from nts_dict_company_scale where company_scale_id = #{companyScaleId}
+    </delete>
+
+    <delete id="deleteCompanyScaleByIds" parameterType="String">
+        delete from nts_dict_company_scale where company_scale_id in 
+        <foreach item="companyScaleId" collection="array" open="(" separator="," close=")">
+            #{companyScaleId}
+        </foreach>
+    </delete>
+    
+</mapper>

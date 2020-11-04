@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.flow.mapper.FlowPlansMapper">
+    
+    <resultMap type="FlowPlans" id="FlowPlansResult">
+        <result property="flowPlansId"    column="flow_plans_id"    />
+        <result property="plansName"    column="plans_name"    />
+        <result property="plansType"    column="plans_type"    />
+        <result property="plansDesc"    column="plans_desc"    />
+        <result property="unitPrice"    column="unit_price"    />
+        <result property="totalPrice"    column="total_price"    />
+        <result property="flowNumber"    column="flow_number"    />
+        <result property="months"    column="months"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectFlowPlansVo">
+        select flow_plans_id, plans_name, plans_type, plans_desc, unit_price, total_price, flow_number, months, create_time, update_time from nts_flow_plans
+    </sql>
+
+    <select id="selectFlowPlansList" parameterType="FlowPlans" resultMap="FlowPlansResult">
+        <include refid="selectFlowPlansVo"/>
+        <where>  
+            <if test="plansName != null  and plansName != ''"> and plans_name like concat('%', #{plansName}, '%')</if>
+            <if test="plansType != null "> and plans_type = #{plansType}</if>
+            <if test="plansDesc != null  and plansDesc != ''"> and plans_desc = #{plansDesc}</if>
+            <if test="unitPrice != null "> and unit_price = #{unitPrice}</if>
+            <if test="totalPrice != null "> and total_price = #{totalPrice}</if>
+            <if test="flowNumber != null "> and flow_number = #{flowNumber}</if>
+            <if test="months != null "> and months = #{months}</if>
+        </where>
+    </select>
+    
+    <select id="selectFlowPlansById" parameterType="Long" resultMap="FlowPlansResult">
+        <include refid="selectFlowPlansVo"/>
+        where flow_plans_id = #{flowPlansId}
+    </select>
+        
+    <insert id="insertFlowPlans" parameterType="FlowPlans" useGeneratedKeys="true" keyProperty="flowPlansId">
+        insert into nts_flow_plans
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="plansName != null  and plansName != ''">plans_name,</if>
+            <if test="plansType != null ">plans_type,</if>
+            <if test="plansDesc != null  and plansDesc != ''">plans_desc,</if>
+            <if test="unitPrice != null ">unit_price,</if>
+            <if test="totalPrice != null ">total_price,</if>
+            <if test="flowNumber != null ">flow_number,</if>
+            <if test="months != null ">months,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="plansName != null  and plansName != ''">#{plansName},</if>
+            <if test="plansType != null ">#{plansType},</if>
+            <if test="plansDesc != null  and plansDesc != ''">#{plansDesc},</if>
+            <if test="unitPrice != null ">#{unitPrice},</if>
+            <if test="totalPrice != null ">#{totalPrice},</if>
+            <if test="flowNumber != null ">#{flowNumber},</if>
+            <if test="months != null ">#{months},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateFlowPlans" parameterType="FlowPlans">
+        update nts_flow_plans
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="plansName != null  and plansName != ''">plans_name = #{plansName},</if>
+            <if test="plansType != null ">plans_type = #{plansType},</if>
+            <if test="plansDesc != null  and plansDesc != ''">plans_desc = #{plansDesc},</if>
+            <if test="unitPrice != null ">unit_price = #{unitPrice},</if>
+            <if test="totalPrice != null ">total_price = #{totalPrice},</if>
+            <if test="flowNumber != null ">flow_number = #{flowNumber},</if>
+            <if test="months != null ">months = #{months},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where flow_plans_id = #{flowPlansId}
+    </update>
+
+    <delete id="deleteFlowPlansById" parameterType="Long">
+        delete from nts_flow_plans where flow_plans_id = #{flowPlansId}
+    </delete>
+
+    <delete id="deleteFlowPlansByIds" parameterType="String">
+        delete from nts_flow_plans where flow_plans_id in 
+        <foreach item="flowPlansId" collection="array" open="(" separator="," close=")">
+            #{flowPlansId}
+        </foreach>
+    </delete>
+    
+</mapper>

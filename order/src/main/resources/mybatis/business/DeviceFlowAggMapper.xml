@@ -1,0 +1,935 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.device.mapper.DeviceFlowAggMapper">
+
+    <resultMap type="DeviceFlowAgg" id="DeviceFlowAggResult">
+        <result property="deviceFlowAggId" column="device_flow_agg_id"/>
+        <result property="subscriberId" column="subscriber_id"/>
+        <result property="carrier" column="carrier"/>
+        <result property="account" column="account"/>
+        <result property="subaccount" column="subaccount"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="smsMo" column="sms_mo"/>
+        <result property="smsMt" column="sms_mt"/>
+        <result property="dataMo" column="data_mo"/>
+        <result property="dataMt" column="data_mt"/>
+        <result property="dataBoth" column="data_both"/>
+        <result property="voiceMo" column="voice_mo"/>
+        <result property="voiceMt" column="voice_mt"/>
+        <result property="orbcommReports" column="orbcomm_reports"/>
+        <result property="orbcommMessages" column="orbcomm_messages"/>
+        <result property="orbcommBytes" column="orbcomm_bytes"/>
+        <result property="statisticsTime" column="statistics_time"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <resultMap type="FlowAggListVo" id="FlowAggListResult">
+        <result property="companyAlias" column="company_alias"/>
+        <result property="deviceName" column="device_name"/>
+        <result property="deviceType" column="device_type"/>
+        <result property="deviceSn" column="device_sn"/>
+        <result property="carrier" column="carrier"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="satelliteModule" column="satellite_module"/>
+        <result property="satelliteSn" column="satellite_sn"/>
+        <result property="satelliteData" column="satellite_data"/>
+        <result property="simOperator" column="sim_operator"/>
+        <result property="simSn" column="sim_sn"/>
+        <result property="simData" column="sim_data"/>
+        <result property="timeZone" column="time_zone"/>
+        <result property="statisticsTime" column="statistics_time"/>
+    </resultMap>
+
+    <resultMap type="FlowAggSumVo" id="FlowAggSumResult">
+        <result property="subscriberId" column="subscriber_id"/>
+        <result property="carrier" column="carrier"/>
+        <result property="account" column="account"/>
+        <result property="subaccount" column="subaccount"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="smsMo" column="sms_mo"/>
+        <result property="smsMt" column="sms_mt"/>
+        <result property="dataMo" column="data_mo"/>
+        <result property="dataMt" column="data_mt"/>
+        <result property="dataBoth" column="data_both"/>
+        <result property="voiceMo" column="voice_mo"/>
+        <result property="voiceMt" column="voice_mt"/>
+        <result property="orbcommReports" column="orbcomm_reports"/>
+        <result property="orbcommMessages" column="orbcomm_messages"/>
+        <result property="orbcommBytes" column="orbcomm_bytes"/>
+        <result property="statisticsTime" column="statistics_time"/>
+        <result property="cardDataUsage" column="card_data_usage"/>
+        <result property="cardCarrier" column="card_carrier"/>
+        <result property="cardDataPlan" column="card_data_plan"/>
+        <result property="cardIccid" column="card_iccid"/>
+        <result property="cardActive" column="card_active"/>
+        <result property="cardActiveDate" column="card_active_date"/>
+    </resultMap>
+
+    <sql id="selectDeviceFlowAggVo">
+        select device_flow_agg_id, subscriber_id, carrier, account, subaccount, price_plan, sms_mo, sms_mt, data_mo, data_mt, data_both, voice_mo, voice_mt, orbcomm_reports, orbcomm_messages, orbcomm_bytes, statistics_time, create_time from nts_device_flow_agg
+    </sql>
+
+    <select id="selectDeviceFlowAggList" parameterType="DeviceFlowAgg" resultMap="DeviceFlowAggResult">
+        <include refid="selectDeviceFlowAggVo"/>
+        <where>
+            <if test="subscriberId != null  and subscriberId != ''">and subscriber_id = #{subscriberId}</if>
+            <if test="carrier != null  and carrier != ''">and carrier = #{carrier}</if>
+            <if test="account != null  and account != ''">and account = #{account}</if>
+            <if test="subaccount != null  and subaccount != ''">and subaccount = #{subaccount}</if>
+            <if test="pricePlan != null  and pricePlan != ''">and price_plan = #{pricePlan}</if>
+            <if test="smsMo != null ">and sms_mo = #{smsMo}</if>
+            <if test="smsMt != null ">and sms_mt = #{smsMt}</if>
+            <if test="dataMo != null ">and data_mo = #{dataMo}</if>
+            <if test="dataMt != null ">and data_mt = #{dataMt}</if>
+            <if test="dataBoth != null ">and data_both = #{dataBoth}</if>
+            <if test="voiceMo != null ">and voice_mo = #{voiceMo}</if>
+            <if test="voiceMt != null ">and voice_mt = #{voiceMt}</if>
+            <if test="orbcommReports != null ">and orbcomm_reports = #{orbcommReports}</if>
+            <if test="orbcommMessages != null ">and orbcomm_messages = #{orbcommMessages}</if>
+            <if test="orbcommBytes != null ">and orbcomm_bytes = #{orbcommBytes}</if>
+            <if test="statisticsTime != null ">and statistics_time = #{statisticsTime}</if>
+        </where>
+    </select>
+
+    <select id="selectDeviceFlowAggById" parameterType="Long" resultMap="DeviceFlowAggResult">
+        <include refid="selectDeviceFlowAggVo"/>
+        where device_flow_agg_id = #{deviceFlowAggId}
+    </select>
+
+    <insert id="insertDeviceFlowAgg" parameterType="DeviceFlowAgg" useGeneratedKeys="true"
+            keyProperty="deviceFlowAggId">
+        insert into nts_device_flow_agg
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subscriberId != null  and subscriberId != ''">subscriber_id,</if>
+            <if test="carrier != null  and carrier != ''">carrier,</if>
+            <if test="account != null  and account != ''">account,</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount,</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan,</if>
+            <if test="smsMo != null ">sms_mo,</if>
+            <if test="smsMt != null ">sms_mt,</if>
+            <if test="dataMo != null ">data_mo,</if>
+            <if test="dataMt != null ">data_mt,</if>
+            <if test="dataBoth != null ">data_both,</if>
+            <if test="voiceMo != null ">voice_mo,</if>
+            <if test="voiceMt != null ">voice_mt,</if>
+            <if test="orbcommReports != null ">orbcomm_reports,</if>
+            <if test="orbcommMessages != null ">orbcomm_messages,</if>
+            <if test="orbcommBytes != null ">orbcomm_bytes,</if>
+            <if test="statisticsTime != null ">statistics_time,</if>
+            <if test="createTime != null ">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subscriberId != null  and subscriberId != ''">#{subscriberId},</if>
+            <if test="carrier != null  and carrier != ''">#{carrier},</if>
+            <if test="account != null  and account != ''">#{account},</if>
+            <if test="subaccount != null  and subaccount != ''">#{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">#{pricePlan},</if>
+            <if test="smsMo != null ">#{smsMo},</if>
+            <if test="smsMt != null ">#{smsMt},</if>
+            <if test="dataMo != null ">#{dataMo},</if>
+            <if test="dataMt != null ">#{dataMt},</if>
+            <if test="dataBoth != null ">#{dataBoth},</if>
+            <if test="voiceMo != null ">#{voiceMo},</if>
+            <if test="voiceMt != null ">#{voiceMt},</if>
+            <if test="orbcommReports != null ">#{orbcommReports},</if>
+            <if test="orbcommMessages != null ">#{orbcommMessages},</if>
+            <if test="orbcommBytes != null ">#{orbcommBytes},</if>
+            <if test="statisticsTime != null ">#{statisticsTime},</if>
+            <if test="createTime != null ">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateDeviceFlowAgg" parameterType="DeviceFlowAgg">
+        update nts_device_flow_agg
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="subscriberId != null  and subscriberId != ''">subscriber_id = #{subscriberId},</if>
+            <if test="carrier != null  and carrier != ''">carrier = #{carrier},</if>
+            <if test="account != null  and account != ''">account = #{account},</if>
+            <if test="subaccount != null  and subaccount != ''">subaccount = #{subaccount},</if>
+            <if test="pricePlan != null  and pricePlan != ''">price_plan = #{pricePlan},</if>
+            <if test="smsMo != null ">sms_mo = #{smsMo},</if>
+            <if test="smsMt != null ">sms_mt = #{smsMt},</if>
+            <if test="dataMo != null ">data_mo = #{dataMo},</if>
+            <if test="dataMt != null ">data_mt = #{dataMt},</if>
+            <if test="dataBoth != null ">data_both = #{dataBoth},</if>
+            <if test="voiceMo != null ">voice_mo = #{voiceMo},</if>
+            <if test="voiceMt != null ">voice_mt = #{voiceMt},</if>
+            <if test="orbcommReports != null ">orbcomm_reports = #{orbcommReports},</if>
+            <if test="orbcommMessages != null ">orbcomm_messages = #{orbcommMessages},</if>
+            <if test="orbcommBytes != null ">orbcomm_bytes = #{orbcommBytes},</if>
+            <if test="statisticsTime != null ">statistics_time = #{statisticsTime},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where device_flow_agg_id = #{deviceFlowAggId}
+    </update>
+
+    <delete id="deleteDeviceFlowAggById" parameterType="Long">
+        delete from nts_device_flow_agg where device_flow_agg_id = #{deviceFlowAggId}
+    </delete>
+
+    <delete id="deleteDeviceFlowAggByIds" parameterType="String">
+        delete from nts_device_flow_agg where device_flow_agg_id in
+        <foreach item="deviceFlowAggId" collection="array" open="(" separator="," close=")">
+            #{deviceFlowAggId}
+        </foreach>
+    </delete>
+
+    <select id="queryFlowAggList" resultMap="FlowAggListResult">
+        select
+	      c.alias as company_alias,
+	      d.device_name,
+	      ddt.name as device_type,
+	      d.device_sn,
+	      dc.name as carrier,
+	      dd.price_plan,
+	      dd.satellite_module,
+	      dd.satellite_sn,
+	      dfa.orbcomm_bytes as satellite_data,
+	      dd.sim_operator,
+	      dd.sim_sn,
+	      dfa.data_both as sim_data,
+	      dfa.statistics_time
+        from
+	      nts_device as d
+	      left join nts_company as c on c.company_id = d.company_id
+	      left join nts_dict_device_type as ddt on ddt.device_type_id = d.device_type_id
+	      left join nts_device_details as dd on dd.device_id = d.device_id
+	      left join nts_dict_carrier as dc on dc.carrier_id = dd.carrier_id
+	      left join nts_device_flow_agg as dfa on dfa.subscriber_id = d.device_sn
+	    where 1=1 <if test="companyId!= null "> and d.company_id = #{companyId}</if> and d.device_sn = #{deviceSn}
+        order by
+	      dfa.statistics_time desc
+    </select>
+
+    <!--批量插入-->
+    <insert id="addDeviceFlowAgg" parameterType="java.util.List" useGeneratedKeys="true"
+            keyProperty="deviceFlowAggId">
+        insert into nts_device_flow_agg
+        (
+        subscriber_id,
+        carrier,
+        account,
+        subaccount,
+        price_plan,
+        sms_mo,
+        sms_mt,
+        data_mo,
+        data_mt,
+        data_both,
+        voice_mo,
+        voice_mt,
+        orbcomm_reports,
+        orbcomm_messages,
+        orbcomm_bytes,
+        statistics_time,
+        create_time
+        )
+        <foreach collection="deviceFlowAggList" item="item" open="VALUES" close=";" separator=",">
+            (
+            #{item.subscriberId},
+            #{item.carrier},
+            #{item.account},
+            #{item.subaccount},
+            #{item.pricePlan},
+            #{item.smsMo},
+            #{item.smsMt},
+            #{item.dataMo},
+            #{item.dataMt},
+            #{item.dataBoth},
+            #{item.voiceMo},
+            #{item.voiceMt},
+            #{item.orbcommReports},
+            #{item.orbcommMessages},
+            #{item.orbcommBytes},
+            #{item.statisticsTime},
+            #{item.createTime}
+            )
+        </foreach>
+    </insert>
+
+    <!--流量统计累加-->
+    <select id="queryFlowAggSum" resultMap="FlowAggSumResult">
+        select * from (
+        select *
+        from (
+        select
+        subscriber_id,
+        carrier,
+        account,
+        subaccount,
+        price_plan,
+        (select icc_id
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null and companyId !=''">and company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+        <if test="companyId != null ">
+            and nd.company_id =#{companyId}
+        </if>
+        ) card_iccid,
+        (select  case active WHEN 0 then '未激活' else '激活' end as active
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null ">and nd.company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+        <if test="companyId != null ">
+            and nd.company_id =#{companyId}
+        </if>
+        )  card_active,
+        (select active_date
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null and companyId !=''">and nd.company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+        <if test="companyId!= null ">and nd.company_id =#{companyId}</if>
+        ) card_active_date,
+        (select data_usage
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null "> and nd.company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+       <if test="companyId != null "> and nd.company_id =#{companyId}</if>
+        ) card_data_usage,
+        (select carrier
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null ">and nd.company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+       <if test="companyId != null "> and nd.company_id =#{companyId}</if>
+        ) card_carrier,
+        (select data_plan
+        from nts_card_info
+        where device_id =
+        (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id <if test="companyId != null ">and nd.company_id =#{companyId}</if>)
+        <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+       <if test="companyId != null and companyId!= ''"> and nd.company_id =#{companyId}</if>
+        ) card_data_plan,
+        (select sum(sms_mo) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as sms_mo,
+        (select sum(sms_mt) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as sms_mt,
+        (select sum(data_mo) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as data_mo,
+        (select sum(data_mt) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as data_mt,
+        (select sum(data_both) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as data_both,
+        (select sum(voice_mo) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as voice_mo,
+        (select sum(voice_mt) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as voice_mt,
+        (select sum(orbcomm_reports) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as orbcomm_reports,
+        (select sum(orbcomm_messages) from nts_device_flow_agg, nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as orbcomm_messages,
+        (select sum(orbcomm_bytes) from nts_device_flow_agg,nts_device nd
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+            <if test="companyId != null ">and nd.company_id =#{companyId}</if>
+            and nd.device_sn = subscriber_id
+        </where>
+        ) as orbcomm_bytes,
+        max(statistics_time) as statistics_time
+        from nts_device_flow_agg as dfa ,
+        nts_device nd
+        <where>
+            <if test="subscriberId != null and subscriberId != ''">and dfa.subscriber_id like
+                CONCAT('%',#{subscriberId},'%')
+            </if>
+            <if test="startDate != null and startDate != ''">and date_format(dfa.statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(dfa.statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        and 1=1
+            <if test="companyId != null ">
+                and nd.company_id =#{companyId}
+            </if>
+        and nd.device_sn = subscriber_id
+        </where>
+        group by dfa.subscriber_id
+        ) dd
+        union
+        select
+        null                                                             subscriber_id,
+        null                                                             carrier,
+        null                                                             account,
+        null                                                             subaccount,
+        null                                                             price_plan,
+        icc_id                                                           card_iccid,
+        (select  case active WHEN 0 then '未激活' else '激活' end as active from nts_card_info where icc_id = nci.icc_id)                                                           cardActive,
+        active_date                                                      cardActiveDate,
+        data_usage                                                       card_data_usage,
+        data_plan                                                        card_data_plan,
+        carrier                                                          card_carrier,
+        null                                                             sms_mo,
+        null                                                             sms_mt,
+        null                                                             data_mo,
+        null                                                             data_mt,
+        null                                                             data_both,
+        null                                                             voice_mo,
+        null                                                             voice_mt,
+        null                                                             orbcomm_reports,
+        null                                                             orbcomm_messages,
+        null                                                             orbcomm_bytes,
+
+        (select MAX(date) from nts_card_usaged_log where card_id = nci.id)
+        statistics_time
+        from nts_card_info nci
+        where nci.device_id in (select nd2.device_id from nts_device nd2 where 1=1 <if test="companyId != null">and nd2.company_id = #{companyId}</if>
+        )
+        <if test="startDate != null and startDate != ''">and date_format(create_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">and date_format(create_time,'%Y-%m-%d %H:%i:%s')
+            <![CDATA[<=]]> #{overDate}
+        </if>
+        <if test="subscriberId != null and subscriberId != ''">and nci.icc_id  like
+            CONCAT('%',#{subscriberId},'%')
+        </if>
+        <if test="companyId != null ">
+            and nci.company_id =#{companyId}
+        </if>
+        ) df
+        order by df.statistics_time desc
+    </select>
+
+    <!--根据订阅ID(设备SN）流量统计日志列表-->
+    <select id="queryFlowAggSumLog" resultMap="FlowAggSumResult">
+        select
+        subscriber_id,
+        carrier,
+        account,
+        subaccount,
+        price_plan,
+        (select sum(sms_mo) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as sms_mo,
+        (select sum(sms_mt) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as sms_mt,
+        (select sum(data_mo) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as data_mo,
+        (select sum(data_mt) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as data_mt,
+        (select sum(data_both) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as data_both,
+        (select sum(voice_mo) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as voice_mo,
+        (select sum(voice_mt) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as voice_mt,
+        (select sum(orbcomm_reports) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as orbcomm_reports,
+        (select sum(orbcomm_messages) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as orbcomm_messages,
+        (select sum(orbcomm_bytes) from nts_device_flow_agg
+        <where>
+            <if test="1==1">and subscriber_id = dfa.subscriber_id</if>
+            <if test="startDate != null and startDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        ) as orbcomm_bytes,
+        (max(statistics_time)) as statistics_time
+        from
+        nts_device_flow_agg as dfa
+        <where>
+            <if test="subscriberId != null and subscriberId != ''">and dfa.subscriber_id = #{subscriberId}</if>
+            <if test="startDate != null and startDate != ''">and date_format(dfa.statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[>=]]> #{startDate}
+            </if>
+            <if test="overDate != null and overDate != ''">and date_format(dfa.statistics_time,'%Y-%m-%d %H:%i:%s')
+                <![CDATA[<=]]> #{overDate}
+            </if>
+        </where>
+        group by
+        date_format(dfa.statistics_time,'%Y%m%d')
+        order by
+        dfa.statistics_time desc
+    </select>
+
+
+    <select id="get4GSatUseData" resultType="com.coldchain.project.business.card.domain.Index4GStaUseDataVo">
+        select df.date, round(sum(df.sumCard),2) sumCard, round(df.sumSat,2) sumSat
+        from (
+                 select dd.date date, sum(dd.sum) / 1024 sumSat, null sumCard
+                 from (
+                          select date_format(statistics_time, '%Y-%m') date,
+                                 (ifnull(sms_mo, 0) + ifnull(sms_mt, 0) + ifnull(data_mo, 0) + ifnull(data_mt, 0) +
+                                  ifnull(voice_mo, 0) + ifnull(voice_mt, 0) +
+                                  ifnull(orbcomm_bytes, 0)) as         sum
+                          from nts_device_flow_agg ndfa,
+                               nts_device nd
+                          where 1 = 1
+                            and ndfa.subscriber_id = nd.device_sn
+                            <if test="userId != null ">and nd.user_id = #{userId}</if>
+                            and statistics_time is not null
+                            and date_format(statistics_time, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                            and date_format(statistics_time, '%Y-%m') <![CDATA[<=]]> #{endDate}
+                      ) dd
+                 group by dd.date
+                 union
+                 select date_format(date, '%Y-%m') date, null sumCard, max(data_usage) sumCard
+                 from nts_card_usaged_log
+                 where 1 = 1
+                   and date_format(date, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                   and date_format(date, '%Y-%m') <![CDATA[<=]]> #{endDate}
+                 group by date_format(date, '%Y-%m')
+             ) df
+        group by df.date
+    </select>
+    <select id="get4GSatUseFlow" resultType="com.coldchain.project.business.card.domain.Index4GStaUseDataVo">
+        select df.date, round(sum(df.sumCard),2) sumCard, round(df.sumSat,2) sumSat
+        from (
+                 select dd.date date, sum(dd.sum) / 1024 sumSat, null sumCard
+                 from (
+                          select date_format(statistics_time, '%Y-%m') date,
+                                 (ifnull(sms_mo, 0) + ifnull(sms_mt, 0) + ifnull(data_mo, 0) + ifnull(data_mt, 0) +
+                                  ifnull(voice_mo, 0) + ifnull(voice_mt, 0) +
+                                  ifnull(orbcomm_bytes, 0)) as         sum
+                          from nts_device_flow_agg ndfa,
+                               nts_device nd
+                          where 1 = 1
+                            and ndfa.subscriber_id = nd.device_sn
+                            <if test="companyId != null ">
+                                and nd.company_id = #{companyId}
+                            </if>
+                        and date_format(ndfa.statistics_time, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                        and date_format(ndfa.statistics_time, '%Y-%m') <![CDATA[<=]]> #{overDate}
+                            and nd.device_sn = #{deviceSn}
+                      ) dd
+                 group by dd.date
+                 union
+                 select date_format(ncul.date, '%Y-%m') date, null sumSat, max(ncul.data_usage) sumCard
+                 from nts_card_usaged_log ncul ,
+                      nts_card_info nci
+                 where 1 = 1
+                   and ncul.card_id = nci.id
+                   <if test="companyId != null">
+                   and nci.company_id = #{companyId}
+                   </if>
+                   and nci.icc_id = #{deviceSn}
+                    and date_format(ncul.create_time, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                    and date_format(ncul.create_time, '%Y-%m') <![CDATA[<=]]> #{overDate}
+                 group by date_format(date, '%Y-%m')
+             ) df
+        group by df.date
+    </select>
+    <select id="get4GSatUseFlow2" resultMap="FlowAggSumResult">
+        select * from (
+                          select *
+                          from (
+                                   select subscriber_id,
+                                          (select plans_name
+                                           from nts_order_flow_plans nofp
+                                                    join nts_order_company_flow nocf
+                                                         on nofp.order_id = nocf.order_company_flow_id
+                                           where 1=1
+                                               <if test="companyId != null ">and nocf.company_id = #{companyId}</if>
+                                             and nofp.order_type = 2
+                                             and nocf.order_status = 2
+                                           order by nocf.create_time desc
+                                           limit 1 ) price_plan,
+                                          (select data_usage
+                                           from nts_card_info
+                                           where device_id =
+                                                 (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id)) card_data_usage,
+                                          (select data_plan
+                                           from nts_card_info
+                                           where device_id =
+                                                 (select nd.device_id from nts_device nd where nd.device_sn = dfa.subscriber_id)) card_data_plan,
+                                          (select sum(sms_mo)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 sms_mo,
+                                          (select sum(sms_mt)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 sms_mt,
+                                          (select sum(data_mo)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 data_mo,
+                                          (select sum(data_mt)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 data_mt,
+                                          (select sum(data_both)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 data_both,
+                                          (select sum(voice_mo)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 voice_mo,
+                                          (select sum(voice_mt)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 voice_mt,
+                                          (select sum(orbcomm_reports)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 orbcomm_reports,
+                                          (select sum(orbcomm_messages)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 orbcomm_messages,
+                                          (select sum(orbcomm_bytes)
+                                           from nts_device_flow_agg
+                                           WHERE subscriber_id = dfa.subscriber_id
+                                          )                    as                                                                 orbcomm_bytes,
+                                          max(statistics_time) as                                                                 statistics_time
+                                   from nts_device_flow_agg as dfa
+                                   where dfa.subscriber_id = #{deviceSn}
+                                   group by dfa.subscriber_id
+                               ) dd
+                          union
+                          select
+                              nci.icc_id                                                       subscriber_id,
+                              null                                                             price_plan,
+                              data_usage                                                       card_data_usage,
+                              data_plan                                                        card_data_plan,
+                              null                                                             sms_mo,
+                              null                                                             sms_mt,
+                              null                                                             data_mo,
+                              null                                                             data_mt,
+                              null                                                             data_both,
+                              null                                                             voice_mo,
+                              null                                                             voice_mt,
+                              null                                                             orbcomm_reports,
+                              null                                                             orbcomm_messages,
+                              null                                                             orbcomm_bytes,
+                              (select MAX(date) from nts_card_usaged_log where card_id = nci.id)
+                                                                                               statistics_time
+                          from nts_card_info nci
+                          where nci.device_id in (select nd2.device_id from nts_device nd2 where 1=1
+                                                                                             and nd2.card_icc_id = #{deviceSn}
+#                                                             and nd2.device_sn is null
+                          )
+                      ) df
+        order by df.statistics_time desc
+
+    </select>
+    <select id="getCompanyFlowDetail" resultType="com.coldchain.project.business.card.domain.Index4GStaUseDataVo">
+        select df.date, round(sum(df.sumCard),2) sumCard, round(df.sumSat,2) sumSat
+        from (
+                 select dd.date date, sum(dd.sum) / 1024 sumSat, null sumCard
+                 from (
+                          select date_format(statistics_time, '%Y-%m') date,
+                                 (ifnull(sms_mo, 0) + ifnull(sms_mt, 0) + ifnull(data_mo, 0) + ifnull(data_mt, 0) +
+                                  ifnull(voice_mo, 0) + ifnull(voice_mt, 0) +
+                                  ifnull(orbcomm_bytes, 0)) as         sum
+                          from nts_device_flow_agg ndfa,
+                               nts_device nd
+                          where 1 = 1
+                            and ndfa.subscriber_id = nd.device_sn
+                            <if test="startDate != null and startDate != ''">
+                                and date_format(ndfa.statistics_time, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                            </if>
+                            <if test="overDate != null and overDate != ''">
+                                and date_format(ndfa.statistics_time, '%Y-%m') <![CDATA[<=]]> #{overDate}
+                            </if>
+                            and nd.company_id =#{companyId}
+                      ) dd
+                 group by dd.date
+                 union
+                 select date_format(ncul.date, '%Y-%m') date, null sumSat, max(ncul.data_usage) sumCard
+                 from nts_card_usaged_log ncul ,
+                      nts_card_info nci
+                 where 1 = 1
+                   and ncul.card_id = nci.id
+                   and nci.company_id = #{companyId}
+                <if test="startDate != null and startDate != ''">
+                    and date_format(ncul.date, '%Y-%m') <![CDATA[>=]]> #{startDate}
+                </if>
+                <if test="overDate != null and overDate != ''">
+                    and date_format(ncul.date, '%Y-%m') <![CDATA[<=]]> #{overDate}
+                </if>
+                 group by date_format(date, '%Y-%m')
+             ) df
+        group by df.date
+
+    </select>
+    <select id="getCompanyFlowDetail2" resultType="com.coldchain.project.business.device.domain.CompanyFlowDetailVo">
+        select round(sum(dd.sumSat) / 1024, 2) sumSat, satNum, round(dd.sumCard, 2) sumCard, cardNum
+        from (
+        select (ifnull(sms_mo, 0) + ifnull(sms_mt, 0) + ifnull(data_mo, 0) + ifnull(data_mt, 0) +
+         ifnull(voice_mo, 0) + ifnull(voice_mt, 0) +
+        ifnull(orbcomm_bytes, 0)
+        ) as sumSat,
+        (select count(nd2.activate)
+        from nts_device nd2
+        where 1 = 1
+        and nd2.device_sn = ndfa.subscriber_id
+        and nd2.activate = 1
+        and nd2.company_id = #{companyId}
+        and date_format(nd2.activate_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        and date_format(nd2.activate_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        )        satNum,
+        (select max(ncul.data_usage)
+        from nts_card_usaged_log ncul,
+        nts_card_info nci
+        where 1 = 1
+        and ncul.card_id = nci.id
+        and nci.active = 1
+        and nci.company_id = #{companyId}
+        and date_format(ncul.date, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        and date_format(ncul.date, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        )        sumCard,
+        (
+        select (select count(nci2.active)
+        from nts_card_info nci2
+        where 1 = 1
+        and nci2.active = 1
+        and nci2.icc_id = nci.icc_id
+        and nci2.company_id = #{companyId}
+        and date_format(nci2.active_date, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        and date_format(nci2.active_date, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        )
+        from nts_card_usaged_log ncul,
+        nts_card_info nci
+        where 1 = 1
+        and ncul.card_id = nci.id
+        and nci.active = 1
+        and nci.company_id = #{companyId}
+        and date_format(ncul.date, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        and date_format(ncul.date, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        group by ncul.card_id
+        )        cardNum
+        from nts_device_flow_agg ndfa,
+        nts_device nd
+        where 1 = 1
+        and ndfa.subscriber_id = nd.device_sn
+        and nd.activate = 1
+        and date_format(statistics_time, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        and date_format(statistics_time, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        and nd.company_id = #{companyId}
+        ) dd;
+
+
+
+
+
+    </select>
+
+</mapper>

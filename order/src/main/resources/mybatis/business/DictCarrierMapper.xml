@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.CarrierMapper">
+    
+    <resultMap type="Carrier" id="CarrierResult">
+        <result property="carrierId"    column="carrier_id"    />
+        <result property="name"    column="name"    />
+        <result property="descr"    column="descr"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCarrierVo">
+        select carrier_id, name, descr, delete_flag, create_time, update_time from nts_dict_carrier
+    </sql>
+
+    <select id="selectCarrierList" parameterType="Carrier" resultMap="CarrierResult">
+        <include refid="selectCarrierVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectCarrierById" parameterType="Integer" resultMap="CarrierResult">
+        <include refid="selectCarrierVo"/>
+        where carrier_id = #{carrierId}
+    </select>
+        
+    <insert id="insertCarrier" parameterType="Carrier" useGeneratedKeys="true" keyProperty="carrierId">
+        insert into nts_dict_carrier
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCarrier" parameterType="Carrier">
+        update nts_dict_carrier
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where carrier_id = #{carrierId}
+    </update>
+
+    <delete id="deleteCarrierById" parameterType="Integer">
+        delete from nts_dict_carrier where carrier_id = #{carrierId}
+    </delete>
+
+    <delete id="deleteCarrierByIds" parameterType="String">
+        delete from nts_dict_carrier where carrier_id in 
+        <foreach item="carrierId" collection="array" open="(" separator="," close=")">
+            #{carrierId}
+        </foreach>
+    </delete>
+    
+</mapper>

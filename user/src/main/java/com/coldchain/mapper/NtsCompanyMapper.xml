@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.dao.NtsCompanyMapper">
+
+    <sql id="baseSql">
+              nc.id,
+              nc.company_type,
+              nc.company_name,
+              nc.logo,
+              nc.business_license,
+              nc.social_credit_code,
+              nc.company_address,
+              nc.company_profile,
+              nc.company_phone,
+              nc.create_time,
+              nc.create_by,
+              nc.update_time,
+              nc.update_by,
+              nc.status,
+              nc.audit_status,
+              nc.audit_time,
+              nc.audit_by,
+              nc.parent_id
+    </sql>
+    <select id="tree" resultType="com.coldchain.entity.vo.NtsCompanyVo">
+        select
+        <include refid="baseSql"/>
+        from nts_company nc
+        join nts_user_company nuc
+        on nc.id = nuc.company_id
+        where 1 = 1
+        <if test="userId != null">
+            and nuc.user_id = #{userId}
+        </if>
+        <if test="companyId != null">
+            and nuc.company_id = #{companyId}
+        </if>
+        <if test="companyName != null">
+            and nc.company_name like CONCAT(CONCAT('%',#{companyName}),'%')
+        </if>
+    </select>
+
+    <select id="getGroupCompany" resultType="com.common.dto.NtsCompanyDto">
+        select
+        <include refid="baseSql"/>
+        from nts_company nc
+        join nts_user_company nuc
+        on nc.id = nuc.company_id
+        where 1 = 1
+        <if test="userId != null">
+            and nuc.user_id = #{userId};
+        </if>
+        <if test="companyId != null">
+            and nc.id =#{companyId}
+        </if>
+    </select>
+    <select id="userManagerCompanyDetail" resultType="com.coldchain.entity.vo.NtsCompanyVo">
+        SELECT
+        <include refid="baseSql"/>
+        FROM
+        nts_company nc
+        JOIN nts_user_company nuc
+        ON nc.`id` = nuc.`company_id`
+        WHERE nuc.`user_id` =#{userId}
+    </select>
+    <select id="serverPage" resultType="com.coldchain.entity.vo.NtsCompanyVo">
+        SELECT
+        <include refid="baseSql"/>
+        FROM
+        nts_company nc
+        where 1=1
+        <if test="companyName != null and companyName != ''">
+            and nc.company_name like CONCAT(CONCAT('%',#{companyName}),'%')
+        </if>
+        <if test="companyPhone != null and companyPhone != ''">
+            and nc.company_phone like CONCAT(CONCAT('%',#{companyPhone}),'%')
+        </if>
+        <if test="status != null">
+            and nc.status =#{status}
+        </if>
+        <if test="start !=null">
+            and FROM_UNIXTIME(nc.create_time) &gt;= #{start}
+        </if>
+        <if test="end !=null">
+            and FROM_UNIXTIME(nc.create_time) &lt;= #{end}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.CompanyMemberMapper">
+    
+    <resultMap type="CompanyMember" id="CompanyMemberResult">
+        <result property="companyMemberId"    column="company_member_id"    />
+        <result property="name"    column="name"    />
+        <result property="descr"    column="descr"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectCompanyMemberVo">
+        select company_member_id, name, descr, delete_flag, create_time, update_time from nts_dict_company_member
+    </sql>
+
+    <select id="selectCompanyMemberList" parameterType="CompanyMember" resultMap="CompanyMemberResult">
+        <include refid="selectCompanyMemberVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectCompanyMemberById" parameterType="Integer" resultMap="CompanyMemberResult">
+        <include refid="selectCompanyMemberVo"/>
+        where company_member_id = #{companyMemberId}
+    </select>
+        
+    <insert id="insertCompanyMember" parameterType="CompanyMember" useGeneratedKeys="true" keyProperty="companyMemberId">
+        insert into nts_dict_company_member
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCompanyMember" parameterType="CompanyMember">
+        update nts_dict_company_member
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where company_member_id = #{companyMemberId}
+    </update>
+
+    <delete id="deleteCompanyMemberById" parameterType="Integer">
+        delete from nts_dict_company_member where company_member_id = #{companyMemberId}
+    </delete>
+
+    <delete id="deleteCompanyMemberByIds" parameterType="String">
+        delete from nts_dict_company_member where company_member_id in 
+        <foreach item="companyMemberId" collection="array" open="(" separator="," close=")">
+            #{companyMemberId}
+        </foreach>
+    </delete>
+    
+</mapper>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.company.mapper.CompanyMapper">
+
+    <resultMap type="Company" id="CompanyResult">
+        <result property="companyId" column="company_id"/>
+        <result property="name" column="name"/>
+        <result property="alias" column="alias"/>
+        <result property="address" column="address"/>
+        <result property="industryId" column="industry_id"/>
+        <result property="companyMemberId" column="company_member_id"/>
+        <result property="companyScaleId" column="company_scale_id"/>
+        <result property="licCode" column="lic_code"/>
+        <result property="licName" column="lic_name"/>
+        <result property="licAddress" column="lic_address"/>
+        <result property="legalPerson" column="legal_person"/>
+        <result property="license" column="license"/>
+        <result property="webUrl" column="web_url"/>
+        <result property="email" column="email"/>
+        <result property="telephone" column="telephone"/>
+        <result property="auditStatus" column="audit_status"/>
+        <result property="deleteFlag" column="delete_flag"/>
+        <result property="auditDesc" column="audit_desc"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <sql id="selectCompanyVo">
+        select company_id, name, alias, address, industry_id, company_member_id, company_scale_id, lic_code, lic_name, lic_address,
+        legal_person, license, web_url, email, telephone, audit_status, delete_flag, audit_desc, create_time, update_time
+        from nts_company T
+    </sql>
+
+    <select id="selectCompanyList" parameterType="Company" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        <where>
+            <if test="name != null  and name != ''">and name like concat('%', #{name}, '%')</if>
+            <if test="alias != null  and alias != ''">and alias like concat('%', #{alias}, '%')</if>
+            <if test="address != null  and address != ''">and address = #{address}</if>
+            <if test="industryId != null ">and industry_id = #{industryId}</if>
+            <if test="companyMemberId != null ">and company_member_id = #{companyMemberId}</if>
+            <if test="companyScaleId != null ">and company_scale_id = #{companyScaleId}</if>
+            <if test="licCode != null  and licCode != ''">and lic_code = #{licCode}</if>
+            <if test="licName != null  and licName != ''">and lic_name like concat('%', #{licName}, '%')</if>
+            <if test="licAddress != null  and licAddress != ''">and lic_address = #{licAddress}</if>
+            <if test="legalPerson != null  and legalPerson != ''">and legal_person = #{legalPerson}</if>
+            <if test="license != null  and license != ''">and license = #{license}</if>
+            <if test="webUrl != null  and webUrl != ''">and web_url = #{webUrl}</if>
+            <if test="email != null  and email != ''">and email = #{email}</if>
+            <if test="telephone != null  and telephone != ''">and telephone = #{telephone}</if>
+            <if test="auditStatus != null ">and audit_status = #{auditStatus}</if>
+            <if test="deleteFlag != null ">and delete_flag = #{deleteFlag}</if>
+            <if test="auditDesc != null  and auditDesc != ''">and audit_desc = #{auditDesc}</if>
+        </where>
+    </select>
+
+    <select id="selectCompanyById" parameterType="Long" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        where company_id = #{companyId}
+    </select>
+
+    <insert id="insertCompany" parameterType="Company" useGeneratedKeys="true" keyProperty="companyId">
+        insert into nts_company
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="alias != null  and alias != ''">alias,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="industryId != null ">industry_id,</if>
+            <if test="companyMemberId != null ">company_member_id,</if>
+            <if test="companyScaleId != null ">company_scale_id,</if>
+            <if test="licCode != null  and licCode != ''">lic_code,</if>
+            <if test="licName != null  and licName != ''">lic_name,</if>
+            <if test="licAddress != null  and licAddress != ''">lic_address,</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person,</if>
+            <if test="license != null  and license != ''">license,</if>
+            <if test="webUrl != null  and webUrl != ''">web_url,</if>
+            <if test="email != null  and email != ''">email,</if>
+            <if test="telephone != null  and telephone != ''">telephone,</if>
+            <if test="auditStatus != null ">audit_status,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="auditDesc != null  and auditDesc != ''">audit_desc,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="alias != null  and alias != ''">#{alias},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="industryId != null ">#{industryId},</if>
+            <if test="companyMemberId != null ">#{companyMemberId},</if>
+            <if test="companyScaleId != null ">#{companyScaleId},</if>
+            <if test="licCode != null  and licCode != ''">#{licCode},</if>
+            <if test="licName != null  and licName != ''">#{licName},</if>
+            <if test="licAddress != null  and licAddress != ''">#{licAddress},</if>
+            <if test="legalPerson != null  and legalPerson != ''">#{legalPerson},</if>
+            <if test="license != null  and license != ''">#{license},</if>
+            <if test="webUrl != null  and webUrl != ''">#{webUrl},</if>
+            <if test="email != null  and email != ''">#{email},</if>
+            <if test="telephone != null  and telephone != ''">#{telephone},</if>
+            <if test="auditStatus != null ">#{auditStatus},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="auditDesc != null  and auditDesc != ''">#{auditDesc},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCompany" parameterType="Company">
+        update nts_company
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="alias != null  and alias != ''">alias = #{alias},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="industryId != null ">industry_id = #{industryId},</if>
+            <if test="companyMemberId != null ">company_member_id = #{companyMemberId},</if>
+            <if test="companyScaleId != null ">company_scale_id = #{companyScaleId},</if>
+            <if test="licCode != null  and licCode != ''">lic_code = #{licCode},</if>
+            <if test="licName != null  and licName != ''">lic_name = #{licName},</if>
+            <if test="licAddress != null  and licAddress != ''">lic_address = #{licAddress},</if>
+            <if test="legalPerson != null  and legalPerson != ''">legal_person = #{legalPerson},</if>
+            <if test="license != null  and license != ''">license = #{license},</if>
+            <if test="webUrl != null  and webUrl != ''">web_url = #{webUrl},</if>
+            <if test="email != null  and email != ''">email = #{email},</if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},</if>
+            <if test="auditStatus != null ">audit_status = #{auditStatus},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="auditDesc != null  and auditDesc != ''">audit_desc = #{auditDesc},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where company_id = #{companyId}
+    </update>
+
+    <delete id="deleteCompanyById" parameterType="Long">
+        delete from nts_company where company_id = #{companyId}
+    </delete>
+
+    <delete id="deleteCompanyByIds" parameterType="String">
+        delete from nts_company where company_id in
+        <foreach item="companyId" collection="array" open="(" separator="," close=")">
+            #{companyId}
+        </foreach>
+    </delete>
+
+    <select id="queryByName" parameterType="String" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        where T.name = #{name}
+    </select>
+
+    <select id="selectListByLike" parameterType="String" resultMap="CompanyResult">
+        <include refid="selectCompanyVo"/>
+        where concat_ws(',',name,alias) like concat('%',#{search},'%') and delete_flag = 1
+    </select>
+</mapper>

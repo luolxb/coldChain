@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.dict.mapper.PayModelMapper">
+    
+    <resultMap type="PayModel" id="PayModelResult">
+        <result property="payModelId"    column="pay_model_id"    />
+        <result property="name"    column="name"    />
+        <result property="image"    column="image"    />
+        <result property="descr"    column="descr"    />
+        <result property="deleteFlag"    column="delete_flag"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectPayModelVo">
+        select pay_model_id, name, image, descr, delete_flag, create_time, update_time from nts_dict_pay_model
+    </sql>
+
+    <select id="selectPayModelList" parameterType="PayModel" resultMap="PayModelResult">
+        <include refid="selectPayModelVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="image != null  and image != ''"> and image = #{image}</if>
+            <if test="descr != null  and descr != ''"> and descr = #{descr}</if>
+            <if test="deleteFlag != null "> and delete_flag = #{deleteFlag}</if>
+        </where>
+    </select>
+    
+    <select id="selectPayModelById" parameterType="Integer" resultMap="PayModelResult">
+        <include refid="selectPayModelVo"/>
+        where pay_model_id = #{payModelId}
+    </select>
+        
+    <insert id="insertPayModel" parameterType="PayModel" useGeneratedKeys="true" keyProperty="payModelId">
+        insert into nts_dict_pay_model
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">name,</if>
+            <if test="image != null  and image != ''">image,</if>
+            <if test="descr != null  and descr != ''">descr,</if>
+            <if test="deleteFlag != null ">delete_flag,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="image != null  and image != ''">#{image},</if>
+            <if test="descr != null  and descr != ''">#{descr},</if>
+            <if test="deleteFlag != null ">#{deleteFlag},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePayModel" parameterType="PayModel">
+        update nts_dict_pay_model
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="image != null  and image != ''">image = #{image},</if>
+            <if test="descr != null  and descr != ''">descr = #{descr},</if>
+            <if test="deleteFlag != null ">delete_flag = #{deleteFlag},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+        </trim>
+        where pay_model_id = #{payModelId}
+    </update>
+
+    <delete id="deletePayModelById" parameterType="Integer">
+        delete from nts_dict_pay_model where pay_model_id = #{payModelId}
+    </delete>
+
+    <delete id="deletePayModelByIds" parameterType="String">
+        delete from nts_dict_pay_model where pay_model_id in 
+        <foreach item="payModelId" collection="array" open="(" separator="," close=")">
+            #{payModelId}
+        </foreach>
+    </delete>
+    
+</mapper>

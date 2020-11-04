@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.coldchain.project.business.carddetail.mapper.NtsCardUsagedDetailMapper">
+    
+    <resultMap type="NtsCardUsagedDetail" id="NtsCardUsagedDetailResult">
+        <result property="id"    column="id"    />
+        <result property="cardId"    column="card_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="date"    column="date"    />
+        <result property="dataUsage"    column="data_usage"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+
+    <resultMap type="FlowAggSumVo" id="FlowAggSumResult">
+        <result property="subscriberId" column="subscriber_id"/>
+        <result property="carrier" column="carrier"/>
+        <result property="account" column="account"/>
+        <result property="subaccount" column="subaccount"/>
+        <result property="pricePlan" column="price_plan"/>
+        <result property="smsMo" column="sms_mo"/>
+        <result property="smsMt" column="sms_mt"/>
+        <result property="dataMo" column="data_mo"/>
+        <result property="dataMt" column="data_mt"/>
+        <result property="dataBoth" column="data_both"/>
+        <result property="voiceMo" column="voice_mo"/>
+        <result property="voiceMt" column="voice_mt"/>
+        <result property="orbcommReports" column="orbcomm_reports"/>
+        <result property="orbcommMessages" column="orbcomm_messages"/>
+        <result property="orbcommBytes" column="orbcomm_bytes"/>
+        <result property="statisticsTime" column="statistics_time"/>
+        <result property="cardDataUsage" column="card_data_usage"/>
+        <result property="cardCarrier" column="card_carrier"/>
+        <result property="cardDataPlan" column="card_data_plan"/>
+    </resultMap>
+
+    <sql id="selectNtsCardUsagedDetailVo">
+        select id, card_id, create_time, update_time, date, data_usage, remark from nts_card_usaged_detail
+    </sql>
+
+    <select id="selectNtsCardUsagedDetailList" parameterType="NtsCardUsagedDetail" resultMap="NtsCardUsagedDetailResult">
+        <include refid="selectNtsCardUsagedDetailVo"/>
+        <where>  
+            <if test="cardId != null "> and card_id = #{cardId}</if>
+            <if test="date != null "> and date = #{date}</if>
+            <if test="dataUsage != null  and dataUsage != ''"> and data_usage = #{dataUsage}</if>
+        </where>
+    </select>
+
+    <select id="selectNtsCardUsagedDetailList2" parameterType="NtsCardUsagedDetail" resultMap="NtsCardUsagedDetailResult">
+        <include refid="selectNtsCardUsagedDetailVo"/>
+        <where>
+            <if test="cardId != null "> and card_id = #{cardId}</if>
+            <if test="date != null "> and DATE_FORMAT(date,'%Y-%m') = DATE_FORMAT(#{date},'%Y-%m')</if>
+            <if test="dataUsage != null  and dataUsage != ''"> and data_usage = #{dataUsage}</if>
+        </where>
+    </select>
+    
+    <select id="selectNtsCardUsagedDetailById" parameterType="Long" resultMap="NtsCardUsagedDetailResult">
+        <include refid="selectNtsCardUsagedDetailVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertNtsCardUsagedDetail" parameterType="NtsCardUsagedDetail" useGeneratedKeys="true" keyProperty="id">
+        insert into nts_card_usaged_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cardId != null ">card_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="date != null ">date,</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage,</if>
+            <if test="remark != null  and remark != ''">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cardId != null ">#{cardId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="date != null ">#{date},</if>
+            <if test="dataUsage != null  and dataUsage != ''">#{dataUsage},</if>
+            <if test="remark != null  and remark != ''">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateNtsCardUsagedDetail" parameterType="NtsCardUsagedDetail">
+        update nts_card_usaged_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cardId != null ">card_id = #{cardId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="date != null ">date = #{date},</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage = #{dataUsage},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <update id="updateNtsCardUsagedDetailByIccIdAndDate" parameterType="NtsCardUsagedDetail">
+        update nts_card_usaged_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="dataUsage != null  and dataUsage != ''">data_usage = #{dataUsage},</if>
+            <if test="remark != null  and remark != ''">remark = #{remark},</if>
+        </trim>
+        where card_id = #{cardId}
+        and date = #{date}
+    </update>
+
+    <delete id="deleteNtsCardUsagedDetailById" parameterType="Long">
+        delete from nts_card_usaged_detail where id = #{id}
+    </delete>
+
+    <select id="flow4GLogDetail" resultMap="FlowAggSumResult">
+        select (select icc_id from nts_card_info where ncud.card_id = id)    subscriber_id,
+        null                                                          carrier,
+        null                                                          account,
+        null                                                          subaccount,
+        null                                                          price_plan,
+        data_usage                                                    card_data_usage,
+        (select carrier from nts_card_info where ncud.card_id = id)   card_carrier,
+        (select data_plan from nts_card_info where ncud.card_id = id) card_data_plan,
+        null                                                          sms_mo,
+        null                                                          sms_mt,
+        null                                                          data_mo,
+        null                                                          data_mt,
+        null                                                          data_both,
+        null                                                          voice_mo,
+        null                                                          voice_mt,
+        null                                                          orbcomm_reports,
+        null                                                          orbcomm_messages,
+        null                                                          orbcomm_bytes,
+        date                                                          statistics_time
+        from nts_card_usaged_detail ncud
+        where ncud.card_id in (
+        select nci.id
+        from nts_card_info nci
+        where 1=1
+        <if test="iccId!=null and iccId!= ''">
+            and icc_id = #{iccId}
+        </if>
+        )
+        <if test="startDate != null and startDate != ''">
+            and date_format(date, '%Y-%m-%d') <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="overDate != null and overDate != ''">
+            and date_format(date, '%Y-%m-%d') <![CDATA[<=]]> #{overDate}
+        </if>
+        ORDER BY statistics_time desc
+    </select>
+
+    <delete id="deleteNtsCardUsagedDetailByIds" parameterType="String">
+        delete from nts_card_usaged_detail where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>
